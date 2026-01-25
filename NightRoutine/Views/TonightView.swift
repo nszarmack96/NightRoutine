@@ -1,10 +1,7 @@
 import SwiftUI
 
 struct TonightView: View {
-    // Placeholder data for Phase 0 - will be replaced with real data model
-    @State private var steps: [(id: UUID, title: String, isComplete: Bool)] = AppConstants.defaultSteps.map {
-        (id: UUID(), title: $0, isComplete: false)
-    }
+    @StateObject private var viewModel = TonightViewModel()
 
     private var currentDate: String {
         let formatter = DateFormatter()
@@ -12,28 +9,26 @@ struct TonightView: View {
         return formatter.string(from: Date())
     }
 
-    private var allComplete: Bool {
-        steps.allSatisfy { $0.isComplete }
-    }
-
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background
                 Color.black
                     .ignoresSafeArea()
 
-                if allComplete {
-                    // Completion state
+                if viewModel.allComplete {
                     completionView
                 } else {
-                    // Checklist
                     checklistView
                 }
             }
             .navigationTitle("Wind Down")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    if viewModel.currentStreak > 0 {
+                        StreakBadge(count: viewModel.currentStreak)
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         // TODO: Navigate to settings/edit
@@ -44,6 +39,9 @@ struct TonightView: View {
                 }
             }
         }
+        .onAppear {
+            viewModel.loadData()
+        }
     }
 
     // MARK: - Checklist View
@@ -51,7 +49,6 @@ struct TonightView: View {
     private var checklistView: some View {
         ScrollView {
             VStack(spacing: 0) {
-                // Date subtitle
                 HStack {
                     Text(currentDate)
                         .font(.subheadline)
@@ -61,15 +58,14 @@ struct TonightView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 24)
 
-                // Steps list
                 VStack(spacing: 12) {
-                    ForEach(Array(steps.enumerated()), id: \.element.id) { index, step in
+                    ForEach(viewModel.enabledSteps) { step in
                         StepRow(
                             title: step.title,
-                            isComplete: step.isComplete
+                            isComplete: viewModel.isStepCompleted(step)
                         ) {
                             withAnimation(.easeInOut(duration: 0.2)) {
-                                steps[index].isComplete.toggle()
+                                viewModel.toggleStep(step)
                             }
                         }
                     }
@@ -94,14 +90,18 @@ struct TonightView: View {
                 .font(.title3)
                 .foregroundStyle(.secondary)
 
+            if viewModel.currentStreak > 0 {
+                Text("\(viewModel.currentStreak) day streak")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 8)
+            }
+
             Spacer()
 
             Button {
-                // Reset for testing in Phase 0
                 withAnimation {
-                    for index in steps.indices {
-                        steps[index].isComplete = false
-                    }
+                    viewModel.resetTonight()
                 }
             } label: {
                 Text("Reset")
@@ -123,7 +123,6 @@ struct StepRow: View {
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: 16) {
-                // Checkbox
                 ZStack {
                     Circle()
                         .strokeBorder(isComplete ? Color.green : Color.gray.opacity(0.5), lineWidth: 2)
@@ -140,7 +139,6 @@ struct StepRow: View {
                     }
                 }
 
-                // Title
                 Text(title)
                     .font(.body)
                     .foregroundStyle(isComplete ? .secondary : .primary)
@@ -156,6 +154,24 @@ struct StepRow: View {
             )
         }
         .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Streak Badge
+
+struct StreakBadge: View {
+    let count: Int
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "flame.fill")
+                .font(.system(size: 12))
+                .foregroundStyle(.orange)
+            Text("\(count)")
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .foregroundStyle(.secondary)
+        }
     }
 }
 

@@ -2,7 +2,7 @@
 
 This document tracks the implementation phases for the Night Routine Wind-Down app.
 
-**Current Phase:** 1 - Data Model
+**Current Phase:** 5 - Edit Routine
 
 ---
 
@@ -19,21 +19,21 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 
 ---
 
-## Phase 1: Data Model (Local-Only)
+## Phase 1: Data Model (Local-Only) - COMPLETE
 
 ### Models to Define
 
-- [ ] `RoutineStep` model
+- [x] `RoutineStep` model
   - `id` (UUID)
   - `title` (String)
   - `isEnabled` (Bool)
   - `sortOrder` (Int)
 
-- [ ] `RoutineState` model (current night/session)
+- [x] `RoutineState` model (current night/session)
   - `completedStepIDs` (Set<UUID>)
   - `sessionDateKey` (String, format: "YYYY-MM-DD")
 
-- [ ] `UserSettings` model
+- [x] `UserSettings` model
   - `reminderEnabled` (Bool)
   - `reminderTime` (DateComponents)
   - `reminderMessage` (String, optional)
@@ -41,17 +41,17 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 
 ### Persistence
 
-- [ ] Implement UserDefaults + Codable storage
-- [ ] Define storage keys: `routineSteps`, `settings`, `streakData`
-- [ ] Create persistence service with save/load methods
+- [x] Implement UserDefaults + Codable storage
+- [x] Define storage keys: `routineSteps`, `settings`, `streakData`
+- [x] Create persistence service with save/load methods
 
 **Deliverable:** Steps and settings persist across app restarts.
 
 ---
 
-## Phase 2: Default Routine Seed
+## Phase 2: Default Routine Seed - COMPLETE
 
-- [ ] Create default steps list:
+- [x] Create default steps list:
   1. "Skincare"
   2. "Brush teeth"
   3. "Set phone down"
@@ -59,50 +59,50 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
   5. "Water"
   6. "Lights off"
 
-- [ ] Implement first-launch seeding logic
-- [ ] Make seeding idempotent (only if no saved steps exist)
+- [x] Implement first-launch seeding logic
+- [x] Make seeding idempotent (only if no saved steps exist)
 
 **Deliverable:** New users see a full default routine.
 
 ---
 
-## Phase 3: Tonight Screen (Core Flow)
+## Phase 3: Tonight Screen (Core Flow) - COMPLETE
 
-- [ ] Build main "Tonight" checklist screen
-  - [ ] Header: "Wind Down" + subtle date display
-  - [ ] List of enabled steps in sort order
-  - [ ] Large tap targets for each row
-  - [ ] Visual "complete" state per step
+- [x] Build main "Tonight" checklist screen
+  - [x] Header: "Wind Down" + subtle date display
+  - [x] List of enabled steps in sort order
+  - [x] Large tap targets for each row
+  - [x] Visual "complete" state per step
 
-- [ ] Implement completion logic
-  - [ ] Tap toggles step completion for tonight's session
-  - [ ] Track completions in RoutineState
-  - [ ] Reset completions at midnight or new session
+- [x] Implement completion logic
+  - [x] Tap toggles step completion for tonight's session
+  - [x] Track completions in RoutineState
+  - [x] Reset completions at midnight or new session
 
-- [ ] Add completion celebration
-  - [ ] Show calm "Done for tonight" state when all steps complete
+- [x] Add completion celebration
+  - [x] Show calm "Done for tonight" state when all steps complete
 
 **Deliverable:** One-screen, no-friction routine completion.
 
 ---
 
-## Phase 4: Streak (Minimal + Non-Shaming)
+## Phase 4: Streak (Minimal + Non-Shaming) - COMPLETE
 
-- [ ] Define completion criteria
-  - [ ] "Completed night" = all enabled steps checked
+- [x] Define completion criteria
+  - [x] "Completed night" = all enabled steps checked
 
-- [ ] Implement streak storage
-  - [ ] Save completion per day (date key: "YYYY-MM-DD")
-  - [ ] Store as Set<String> of completed dates
+- [x] Implement streak storage
+  - [x] Save completion per day (date key: "YYYY-MM-DD")
+  - [x] Store as Set<String> of completed dates
 
-- [ ] Compute streak
-  - [ ] Count consecutive days with completion
-  - [ ] Handle timezone correctly
+- [x] Compute streak
+  - [x] Count consecutive days with completion
+  - [x] Handle timezone correctly
 
-- [ ] Display streak
-  - [ ] Show single number on Tonight screen (small, subtle)
-  - [ ] No "broken streak" messaging
-  - [ ] No shame, just information
+- [x] Display streak
+  - [x] Show single number on Tonight screen (small, subtle)
+  - [x] No "broken streak" messaging
+  - [x] No shame, just information
 
 **Deliverable:** Streak number updates correctly.
 
@@ -251,11 +251,11 @@ These are explicitly **not** in scope for MVP:
 | Phase | Status | Deliverable |
 |-------|--------|-------------|
 | 0 | Complete | App launches to Tonight screen |
-| 1 | Not Started | Data persists across restarts |
-| 2 | Not Started | Default routine for new users |
-| 3 | Not Started | Core checklist functionality |
-| 4 | Not Started | Streak tracking |
-| 5 | Not Started | Routine customization |
+| 1 | Complete | Data persists across restarts |
+| 2 | Complete | Default routine for new users |
+| 3 | Complete | Core checklist functionality |
+| 4 | Complete | Streak tracking |
+| 5 | In Progress | Routine customization |
 | 6 | Not Started | Daily reminders |
 | 7 | Not Started | Premium purchase |
 | 8 | Not Started | Polish and accessibility |

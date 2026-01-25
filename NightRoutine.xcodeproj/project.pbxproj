@@ -13,6 +13,13 @@
 		A1000004229F0001 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004229F0000 /* AppConstants.swift */; };
 		A1000005229F0001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000005229F0000 /* Assets.xcassets */; };
 		A1000006229F0001 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000006229F0000 /* Preview Assets.xcassets */; };
+		A1000010229F0001 /* RoutineStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000010229F0000 /* RoutineStep.swift */; };
+		A1000011229F0001 /* RoutineState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000011229F0000 /* RoutineState.swift */; };
+		A1000012229F0001 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000012229F0000 /* UserSettings.swift */; };
+		A1000013229F0001 /* StreakData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000013229F0000 /* StreakData.swift */; };
+		A1000014229F0001 /* PremiumStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000014229F0000 /* PremiumStatus.swift */; };
+		A1000020229F0001 /* TonightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000020229F0000 /* TonightViewModel.swift */; };
+		A1000030229F0001 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000030229F0000 /* PersistenceService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +30,13 @@
 		A1000004229F0000 /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		A1000005229F0000 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1000006229F0000 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A1000010229F0000 /* RoutineStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineStep.swift; sourceTree = "<group>"; };
+		A1000011229F0000 /* RoutineState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineState.swift; sourceTree = "<group>"; };
+		A1000012229F0000 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		A1000013229F0000 /* StreakData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakData.swift; sourceTree = "<group>"; };
+		A1000014229F0000 /* PremiumStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumStatus.swift; sourceTree = "<group>"; };
+		A1000020229F0000 /* TonightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TonightViewModel.swift; sourceTree = "<group>"; };
+		A1000030229F0000 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +84,11 @@
 		A10000B2229F0000 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A1000010229F0000 /* RoutineStep.swift */,
+				A1000011229F0000 /* RoutineState.swift */,
+				A1000012229F0000 /* UserSettings.swift */,
+				A1000013229F0000 /* StreakData.swift */,
+				A1000014229F0000 /* PremiumStatus.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -86,6 +105,7 @@
 		A10000B4229F0000 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				A1000020229F0000 /* TonightViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -93,6 +113,7 @@
 		A10000B5229F0000 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				A1000030229F0000 /* PersistenceService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -195,6 +216,13 @@
 				A1000002229F0001 /* ContentView.swift in Sources */,
 				A1000003229F0001 /* TonightView.swift in Sources */,
 				A1000004229F0001 /* AppConstants.swift in Sources */,
+				A1000010229F0001 /* RoutineStep.swift in Sources */,
+				A1000011229F0001 /* RoutineState.swift in Sources */,
+				A1000012229F0001 /* UserSettings.swift in Sources */,
+				A1000013229F0001 /* StreakData.swift in Sources */,
+				A1000014229F0001 /* PremiumStatus.swift in Sources */,
+				A1000020229F0001 /* TonightViewModel.swift in Sources */,
+				A1000030229F0001 /* PersistenceService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
