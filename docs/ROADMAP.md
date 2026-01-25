@@ -2,18 +2,18 @@
 
 This document tracks the implementation phases for the Night Routine Wind-Down app.
 
-**Current Phase:** 0 - Project Setup
+**Current Phase:** 1 - Data Model
 
 ---
 
-## Phase 0: Project Setup
+## Phase 0: Project Setup - COMPLETE
 
-- [ ] Create new iOS app project in Xcode
-- [ ] Configure SwiftUI as UI framework
-- [ ] Add basic app icon placeholder
-- [ ] Add launch screen placeholder
-- [ ] Define app constants (app name, version, default routine steps)
-- [ ] Create basic "Tonight" screen shell
+- [x] Create new iOS app project in Xcode
+- [x] Configure SwiftUI as UI framework
+- [x] Add basic app icon placeholder
+- [x] Add launch screen placeholder
+- [x] Define app constants (app name, version, default routine steps)
+- [x] Create basic "Tonight" screen shell
 
 **Deliverable:** App launches to a single "Tonight" screen.
 
@@ -250,7 +250,7 @@ These are explicitly **not** in scope for MVP:
 
 | Phase | Status | Deliverable |
 |-------|--------|-------------|
-| 0 | In Progress | App launches to Tonight screen |
+| 0 | Complete | App launches to Tonight screen |
 | 1 | Not Started | Data persists across restarts |
 | 2 | Not Started | Default routine for new users |
 | 3 | Not Started | Core checklist functionality |
