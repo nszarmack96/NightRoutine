@@ -30,6 +30,7 @@
 		A1000071229F0001 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000071229F0000 /* PaywallView.swift */; };
 		A1000072229F0001 /* PaywallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000072229F0000 /* PaywallViewModel.swift */; };
 		A1000080229F0001 /* HapticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000080229F0000 /* HapticService.swift */; };
+		A1000081229F0001 /* QuoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000081229F0000 /* QuoteService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		A1000072229F0000 /* PaywallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModel.swift; sourceTree = "<group>"; };
 		A1000073229F0000 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 		A1000080229F0000 /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
+		A1000081229F0000 /* QuoteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 				A1000060229F0000 /* NotificationService.swift */,
 				A1000070229F0000 /* StoreKitService.swift */,
 				A1000080229F0000 /* HapticService.swift */,
+				A1000081229F0000 /* QuoteService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 				A1000071229F0001 /* PaywallView.swift in Sources */,
 				A1000072229F0001 /* PaywallViewModel.swift in Sources */,
 				A1000080229F0001 /* HapticService.swift in Sources */,
+				A1000081229F0001 /* QuoteService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

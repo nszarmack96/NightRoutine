@@ -69,6 +69,17 @@ final class SettingsViewModel: ObservableObject {
         saveAndSchedule()
     }
 
+    func toggleQuietMode(_ enabled: Bool) {
+        settings.quietModeEnabled = enabled
+        persistence.saveSettings(settings)
+    }
+
+    func setQuoteTheme(_ theme: QuoteTheme) {
+        guard canCustomizeMessage else { return }
+        settings.quoteTheme = theme
+        persistence.saveSettings(settings)
+    }
+
     private func saveAndSchedule() {
         persistence.saveSettings(settings)
         Task {

@@ -233,6 +233,41 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 
 ---
 
+## Phase 10: Pre-Launch Features - COMPLETE
+
+### "Skip Without Guilt" Button
+- [x] Add graceful exit button at bottom of Tonight screen
+- [x] "Not tonight — and that's okay" messaging
+- [x] Shows calm completion screen without affecting streak
+- [x] Different icon (moon.zzz) and messaging for skipped state
+
+### Step-Level Notes
+- [x] Add optional `note` field to RoutineStep model
+- [x] Support note editing in EditStepSheet
+- [x] Show subtle note indicator on steps with notes
+- [x] Long-press gesture reveals note inline
+
+### Quiet Mode
+- [x] Add toggle in Settings → Experience section
+- [x] Dims screen with subtle overlay when enabled
+- [x] Disables haptic feedback during routine
+- [x] Respects setting across all interactions
+
+### Quote Theme Packs (Premium)
+- [x] Add QuoteTheme enum with 5 themes: Calm, Romantic, Stoic, Minimal, Encouraging
+- [x] Create QuoteService with themed quote arrays
+- [x] Theme picker in Settings (Premium only)
+- [x] Completion screen shows themed quotes
+
+### "Tomorrow Starts Now" Preview
+- [x] Add reassurance message on completion screen
+- [x] Rotates through encouraging messages about tomorrow
+- [x] Appears for both completed and skipped states
+
+**Deliverable:** Enhanced user experience with graceful flexibility.
+
+---
+
 ## Future Considerations (Post-MVP)
 
 These are explicitly **not** in scope for MVP:
@@ -243,7 +278,6 @@ These are explicitly **not** in scope for MVP:
 - [ ] Multiple routines (morning, evening, etc.)
 - [ ] Statistics/analytics dashboard
 - [ ] Social features
-- [ ] Themes beyond dark mode
 
 ---
 
@@ -261,3 +295,4 @@ These are explicitly **not** in scope for MVP:
 | 7 | Complete | Premium purchase |
 | 8 | Complete | Polish and accessibility |
 | 9 | Complete | App Store ready |
+| 10 | Complete | Pre-launch features |

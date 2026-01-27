@@ -5,12 +5,14 @@ struct RoutineStep: Identifiable, Codable, Equatable {
     var title: String
     var isEnabled: Bool
     var sortOrder: Int
+    var note: String?  // Optional personal note for the step
 
-    init(id: UUID = UUID(), title: String, isEnabled: Bool = true, sortOrder: Int) {
+    init(id: UUID = UUID(), title: String, isEnabled: Bool = true, sortOrder: Int, note: String? = nil) {
         self.id = id
         self.title = title
         self.isEnabled = isEnabled
         self.sortOrder = sortOrder
+        self.note = note
     }
 }
 

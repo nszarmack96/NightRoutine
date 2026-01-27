@@ -25,6 +25,9 @@ struct SettingsView: View {
                         // Reminder Section
                         reminderSection
 
+                        // Experience Section (Quiet Mode + Quote Theme)
+                        experienceSection
+
                         // About Section
                         aboutSection
                     }
@@ -152,6 +155,90 @@ struct SettingsView: View {
             .foregroundStyle(.white)
         }
         .padding(.horizontal, 20)
+    }
+
+    // MARK: - Experience Section
+
+    private var experienceSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Image(systemName: "sparkles")
+                    .foregroundStyle(.purple)
+                Text("Experience")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+            }
+
+            // Quiet Mode Toggle
+            SettingsRow(
+                icon: "moon.zzz.fill",
+                iconColor: .indigo,
+                title: "Quiet Mode",
+                subtitle: "Dims screen, disables haptics"
+            ) {
+                Toggle("", isOn: Binding(
+                    get: { viewModel.settings.quietModeEnabled },
+                    set: { viewModel.toggleQuietMode($0) }
+                ))
+                .labelsHidden()
+                .tint(.purple)
+            }
+
+            // Quote Theme Picker (Premium Only)
+            if viewModel.canCustomizeMessage {
+                quoteThemeSection
+            } else {
+                HStack(spacing: 6) {
+                    Image(systemName: "lock.fill")
+                        .font(.caption)
+                    Text("Quote themes available with Premium")
+                        .font(.caption)
+                }
+                .foregroundStyle(.orange.opacity(0.8))
+                .padding(.horizontal, 20)
+            }
+        }
+        .padding(.horizontal, 20)
+    }
+
+    private var quoteThemeSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Quote Theme")
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.6))
+                .padding(.horizontal, 4)
+
+            LazyVGrid(columns: [
+                GridItem(.flexible()),
+                GridItem(.flexible()),
+                GridItem(.flexible())
+            ], spacing: 10) {
+                ForEach(QuoteTheme.allCases, id: \.self) { theme in
+                    Button {
+                        viewModel.setQuoteTheme(theme)
+                    } label: {
+                        Text(theme.displayName)
+                            .font(.subheadline)
+                            .fontWeight(viewModel.settings.quoteTheme == theme ? .semibold : .regular)
+                            .foregroundStyle(viewModel.settings.quoteTheme == theme ? .white : .white.opacity(0.5))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(viewModel.settings.quoteTheme == theme ? Color.purple.opacity(0.3) : Color.white.opacity(0.05))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .strokeBorder(
+                                                viewModel.settings.quoteTheme == theme ? Color.purple.opacity(0.5) : Color.white.opacity(0.08),
+                                                lineWidth: 1
+                                            )
+                                    )
+                            )
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
     }
 
     // MARK: - About Section

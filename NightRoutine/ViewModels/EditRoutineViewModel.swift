@@ -78,6 +78,15 @@ final class EditRoutineViewModel: ObservableObject {
         saveSteps()
     }
 
+    func updateStep(_ step: RoutineStep, newTitle: String, newNote: String?) {
+        guard let index = steps.firstIndex(where: { $0.id == step.id }) else { return }
+        let trimmedTitle = newTitle.trimmingCharacters(in: .whitespaces)
+        guard !trimmedTitle.isEmpty else { return }
+        steps[index].title = trimmedTitle
+        steps[index].note = newNote
+        saveSteps()
+    }
+
     func resetToDefaults() {
         steps = RoutineStep.defaultSteps()
         saveSteps()

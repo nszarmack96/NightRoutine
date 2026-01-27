@@ -13,6 +13,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-01-27
+
+### Added
+- **"Skip Without Guilt" Button**: Graceful exit option at bottom of Tonight screen
+  - "Not tonight — and that's okay" messaging
+  - Shows calm completion screen without affecting streak
+  - Different icon (moon.zzz) and messaging for skipped nights
+- **Step-Level Notes**: Optional personal notes for each routine step
+  - Note editing in step edit sheet
+  - Subtle note indicator on steps with notes
+  - Long-press to reveal note inline
+- **Quiet Mode**: Toggle in Settings → Experience section
+  - Dims screen with subtle overlay when enabled
+  - Disables haptic feedback during routine
+- **Quote Theme Packs (Premium)**: 5 themed quote collections
+  - Calm, Romantic, Stoic, Minimal, Encouraging themes
+  - Theme picker in Settings (Premium only)
+  - Completion screen displays themed quotes
+- **"Tomorrow Starts Now" Preview**: Reassurance message on completion
+  - Rotates through encouraging messages about tomorrow
+  - Appears for both completed and skipped states
+- **QuoteService**: Centralized service for themed quotes and messages
+
+### Changed
+- RoutineStep model now includes optional `note` field
+- RoutineState model tracks `wasSkipped` state
+- UserSettings includes `quietModeEnabled` and `quoteTheme`
+- TonightView refactored with extracted sub-components for better performance
+- Completion view now adapts content based on skip vs complete state
+
+---
+
 ## [1.0.0] - 2026-01-26
 
 ### Added
@@ -140,3 +172,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.4.0 | 2025-01-26 | Premium purchase working |
 | 0.5.0 | 2026-01-26 | UX polish and accessibility |
 | 1.0.0 | 2026-01-26 | App Store ready |
+| 1.1.0 | 2026-01-27 | Pre-launch features (Skip, Notes, Quiet Mode, Quotes) |

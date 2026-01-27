@@ -43,10 +43,17 @@ struct TonightView: View {
                 )
                 .ignoresSafeArea()
 
-                if viewModel.allComplete {
+                if viewModel.showCompletion {
                     completionView
                 } else {
                     checklistView
+                }
+
+                // Quiet Mode overlay - dims the screen slightly
+                if viewModel.settings.quietModeEnabled {
+                    Color.black.opacity(0.15)
+                        .ignoresSafeArea()
+                        .allowsHitTesting(false)
                 }
             }
             .toolbar {
@@ -74,6 +81,35 @@ struct TonightView: View {
         .onAppear {
             viewModel.loadData()
         }
+    }
+
+    // MARK: - Skip Button
+
+    private var skipButton: some View {
+        Button {
+            withAnimation {
+                viewModel.skipWithoutGuilt()
+            }
+            if viewModel.hapticsEnabled {
+                HapticService.selection()
+            }
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "moon.zzz")
+                    .font(.system(size: 14))
+                Text("Not tonight — and that's okay")
+                    .font(.subheadline)
+            }
+            .foregroundStyle(.white.opacity(0.4))
+            .padding(.vertical, 12)
+            .padding(.horizontal, 20)
+            .background(
+                Capsule()
+                    .strokeBorder(Color.white.opacity(0.1), lineWidth: 1)
+            )
+        }
+        .accessibilityLabel("Skip tonight's routine")
+        .accessibilityHint("End the routine early without affecting your streak")
     }
 
     // MARK: - Checklist View
@@ -123,8 +159,8 @@ struct TonightView: View {
                 // Steps list
                 VStack(spacing: 10) {
                     ForEach(viewModel.enabledSteps) { step in
-                        StepRow(
-                            title: step.title,
+                        StepRowWithNote(
+                            step: step,
                             isComplete: viewModel.isStepCompleted(step),
                             stepNumber: (viewModel.enabledSteps.firstIndex(of: step) ?? 0) + 1
                         ) {
@@ -132,22 +168,31 @@ struct TonightView: View {
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                 viewModel.toggleStep(step)
                             }
-                            // Haptic feedback
-                            if wasComplete {
-                                HapticService.stepToggle()
-                            } else {
-                                HapticService.stepComplete()
+                            // Haptic feedback (respects Quiet Mode)
+                            if viewModel.hapticsEnabled {
+                                if wasComplete {
+                                    HapticService.stepToggle()
+                                } else {
+                                    HapticService.stepComplete()
+                                }
                             }
                             // Check if routine just completed
                             if viewModel.allComplete && !previouslyComplete {
-                                HapticService.routineComplete()
+                                if viewModel.hapticsEnabled {
+                                    HapticService.routineComplete()
+                                }
                             }
                             previouslyComplete = viewModel.allComplete
                         }
                     }
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 40)
+                .padding(.bottom, 24)
+
+                // Skip Without Guilt button
+                skipButton
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 40)
             }
         }
     }
@@ -155,7 +200,11 @@ struct TonightView: View {
     // MARK: - Completion View
 
     private var completionView: some View {
-        ZStack {
+        let quote = viewModel.wasSkipped
+            ? QuoteService.skipQuote()
+            : QuoteService.randomQuote(for: viewModel.settings.quoteTheme)
+
+        return ZStack {
             // Subtle stars
             StarsView()
                 .opacity(0.5)
@@ -170,27 +219,29 @@ struct TonightView: View {
                         .frame(width: 140, height: 140)
                         .blur(radius: 30)
 
-                    Image(systemName: "moon.stars.fill")
+                    Image(systemName: viewModel.wasSkipped ? "moon.zzz.fill" : "moon.stars.fill")
                         .font(.system(size: 64))
                         .foregroundStyle(
                             LinearGradient(
-                                colors: [.purple, .indigo],
+                                colors: viewModel.wasSkipped ? [.blue, .indigo] : [.purple, .indigo],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
                 }
 
-                Text("Done for tonight")
+                // Different messaging for skip vs complete
+                Text(viewModel.wasSkipped ? "Rest easy" : "Done for tonight")
                     .font(.title)
                     .fontWeight(.semibold)
                     .foregroundStyle(.white)
 
-                Text("Sleep well")
+                Text(viewModel.wasSkipped ? "Tomorrow is a new day" : "Sleep well")
                     .font(.title3)
                     .foregroundStyle(.white.opacity(0.5))
 
-                if viewModel.currentStreak > 0 {
+                // Only show streak for full completion
+                if !viewModel.wasSkipped && viewModel.currentStreak > 0 {
                     HStack(spacing: 6) {
                         Image(systemName: "flame.fill")
                             .foregroundStyle(.orange)
@@ -209,23 +260,34 @@ struct TonightView: View {
 
                 Spacer()
 
-                // Motivational quote
+                // Tomorrow preview message
+                Text(QuoteService.tomorrowMessage())
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.35))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+
+                // Themed quote
                 VStack(spacing: 8) {
-                    Text("\"Rest is not idleness.\"")
+                    Text("\"\(quote.quote)\"")
                         .font(.body)
                         .italic()
                         .foregroundStyle(.white.opacity(0.4))
-                    Text("— John Lubbock")
+                        .multilineTextAlignment(.center)
+                    Text("— \(quote.author)")
                         .font(.caption)
                         .foregroundStyle(.white.opacity(0.3))
                 }
+                .padding(.horizontal, 32)
                 .padding(.bottom, 40)
 
                 Button {
                     withAnimation {
                         viewModel.resetTonight()
                     }
-                    HapticService.selection()
+                    if viewModel.hapticsEnabled {
+                        HapticService.selection()
+                    }
                     previouslyComplete = false
                 } label: {
                     Text("Reset Routine")
@@ -301,7 +363,136 @@ struct ProgressCard: View {
     }
 }
 
-// MARK: - Step Row Component
+// MARK: - Step Row With Note Component
+
+struct StepRowWithNote: View {
+    let step: RoutineStep
+    let isComplete: Bool
+    let stepNumber: Int
+    let onTap: () -> Void
+
+    @State private var showingNote = false
+
+    private var hasNote: Bool {
+        guard let note = step.note else { return false }
+        return !note.isEmpty
+    }
+
+    private var circleColor: Color {
+        isComplete ? Color.green : Color.white.opacity(0.1)
+    }
+
+    private var borderColor: Color {
+        isComplete ? Color.green.opacity(0.3) : Color.white.opacity(0.08)
+    }
+
+    private var fillColor: Color {
+        isComplete ? Color.green.opacity(0.1) : Color.white.opacity(0.05)
+    }
+
+    private var titleColor: Color {
+        isComplete ? Color.white.opacity(0.4) : Color.white
+    }
+
+    private var accessibilityHintText: String {
+        let noteHint = hasNote ? "Long press to see note. " : ""
+        let tapHint = isComplete ? "Double tap to unmark" : "Double tap to mark as complete"
+        return noteHint + tapHint
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Button(action: onTap) {
+                rowContent
+            }
+            .buttonStyle(.plain)
+            .onLongPressGesture {
+                if hasNote {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        showingNote.toggle()
+                    }
+                }
+            }
+        }
+        .accessibilityLabel("\(step.title), step \(stepNumber)")
+        .accessibilityValue(isComplete ? "completed" : "not completed")
+        .accessibilityHint(accessibilityHintText)
+    }
+
+    private var rowContent: some View {
+        HStack(spacing: 16) {
+            stepIndicator
+            titleSection
+            Spacer()
+            trailingIcons
+        }
+        .padding(.vertical, 16)
+        .padding(.horizontal, 20)
+        .background(rowBackground)
+    }
+
+    private var stepIndicator: some View {
+        ZStack {
+            Circle()
+                .fill(circleColor)
+                .frame(width: 36, height: 36)
+
+            if isComplete {
+                Image(systemName: "checkmark")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(.black)
+            } else {
+                Text("\(stepNumber)")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.white.opacity(0.5))
+            }
+        }
+    }
+
+    private var titleSection: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(step.title)
+                .font(.body)
+                .fontWeight(.medium)
+                .foregroundStyle(titleColor)
+                .strikethrough(isComplete, color: .white.opacity(0.3))
+
+            if showingNote, let note = step.note, !note.isEmpty {
+                Text(note)
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.4))
+                    .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var trailingIcons: some View {
+        if hasNote && !showingNote {
+            Image(systemName: "note.text")
+                .font(.system(size: 12))
+                .foregroundStyle(.white.opacity(0.25))
+        }
+
+        if !isComplete {
+            Image(systemName: "circle")
+                .font(.system(size: 20))
+                .foregroundStyle(.white.opacity(0.2))
+        }
+    }
+
+    private var rowBackground: some View {
+        RoundedRectangle(cornerRadius: 14)
+            .fill(fillColor)
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .strokeBorder(borderColor, lineWidth: 1)
+            )
+    }
+}
+
+// MARK: - Step Row Component (Legacy)
 
 struct StepRow: View {
     let title: String

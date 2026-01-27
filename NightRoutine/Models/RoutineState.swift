@@ -3,10 +3,12 @@ import Foundation
 struct RoutineState: Codable {
     var completedStepIDs: Set<UUID>
     var sessionDateKey: String
+    var wasSkipped: Bool  // Tracks if user used "Skip Without Guilt"
 
-    init(completedStepIDs: Set<UUID> = [], sessionDateKey: String = RoutineState.todayKey()) {
+    init(completedStepIDs: Set<UUID> = [], sessionDateKey: String = RoutineState.todayKey(), wasSkipped: Bool = false) {
         self.completedStepIDs = completedStepIDs
         self.sessionDateKey = sessionDateKey
+        self.wasSkipped = wasSkipped
     }
 
     static func todayKey() -> String {
@@ -36,6 +38,11 @@ struct RoutineState: Codable {
         if !isToday {
             completedStepIDs = []
             sessionDateKey = Self.todayKey()
+            wasSkipped = false
         }
+    }
+
+    mutating func skipWithoutGuilt() {
+        wasSkipped = true
     }
 }

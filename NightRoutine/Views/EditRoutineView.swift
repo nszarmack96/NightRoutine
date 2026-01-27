@@ -52,11 +52,11 @@ struct EditRoutineView: View {
             .sheet(item: $viewModel.editingStep) { step in
                 EditStepSheet(
                     step: step,
-                    onSave: { newTitle in
-                        viewModel.updateStepTitle(step, newTitle: newTitle)
+                    onSave: { newTitle, newNote in
+                        viewModel.updateStep(step, newTitle: newTitle, newNote: newNote)
                     }
                 )
-                .presentationDetents([.height(200)])
+                .presentationDetents([.height(320)])
             }
             .alert("Reset to Defaults?", isPresented: $showingResetConfirmation) {
                 Button("Cancel", role: .cancel) { }
@@ -299,10 +299,11 @@ struct EditableStepRow: View {
 
 struct EditStepSheet: View {
     let step: RoutineStep
-    let onSave: (String) -> Void
+    let onSave: (String, String?) -> Void
 
     @Environment(\.dismiss) private var dismiss
     @State private var title: String = ""
+    @State private var note: String = ""
 
     var body: some View {
         NavigationStack {
@@ -310,16 +311,50 @@ struct EditStepSheet: View {
                 Color.black.ignoresSafeArea()
 
                 VStack(spacing: 20) {
-                    TextField("Step name", text: $title)
-                        .textFieldStyle(.plain)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 14)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.white.opacity(0.08))
-                        )
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 20)
+                    // Step title
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Step Name")
+                            .font(.subheadline)
+                            .foregroundStyle(.white.opacity(0.6))
+
+                        TextField("Step name", text: $title)
+                            .textFieldStyle(.plain)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 14)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.white.opacity(0.08))
+                            )
+                            .foregroundStyle(.white)
+                    }
+                    .padding(.horizontal, 20)
+
+                    // Optional personal note
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text("Personal Note")
+                                .font(.subheadline)
+                                .foregroundStyle(.white.opacity(0.6))
+                            Text("(optional)")
+                                .font(.caption)
+                                .foregroundStyle(.white.opacity(0.3))
+                        }
+
+                        TextField("e.g. Use the blue moisturizer", text: $note)
+                            .textFieldStyle(.plain)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 14)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color.white.opacity(0.08))
+                            )
+                            .foregroundStyle(.white)
+
+                        Text("Long-press a step during your routine to see its note")
+                            .font(.caption)
+                            .foregroundStyle(.white.opacity(0.3))
+                    }
+                    .padding(.horizontal, 20)
 
                     Spacer()
                 }
@@ -335,7 +370,8 @@ struct EditStepSheet: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
-                        onSave(title)
+                        let trimmedNote = note.trimmingCharacters(in: .whitespaces)
+                        onSave(title, trimmedNote.isEmpty ? nil : trimmedNote)
                         dismiss()
                     }
                     .fontWeight(.semibold)
@@ -345,6 +381,7 @@ struct EditStepSheet: View {
         }
         .onAppear {
             title = step.title
+            note = step.note ?? ""
         }
         .preferredColorScheme(.dark)
     }
