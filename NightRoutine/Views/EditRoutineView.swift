@@ -5,6 +5,7 @@ struct EditRoutineView: View {
     @StateObject private var viewModel = EditRoutineViewModel()
     @State private var newStepTitle = ""
     @State private var showingResetConfirmation = false
+    @State private var showingSettings = false
 
     var body: some View {
         NavigationStack {
@@ -28,6 +29,9 @@ struct EditRoutineView: View {
 
                         // Steps list section
                         stepsListSection
+
+                        // Settings section
+                        settingsSection
 
                         // Reset to defaults
                         resetSection
@@ -65,6 +69,9 @@ struct EditRoutineView: View {
             .sheet(isPresented: $viewModel.showingPaywall) {
                 PaywallPlaceholderView()
                     .presentationDetents([.medium])
+            }
+            .sheet(isPresented: $showingSettings) {
+                SettingsView()
             }
         }
     }
@@ -157,13 +164,62 @@ struct EditRoutineView: View {
         .padding(.horizontal, 20)
     }
 
+    // MARK: - Settings Section
+
+    private var settingsSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Divider()
+                .background(Color.white.opacity(0.1))
+                .padding(.bottom, 4)
+
+            Button {
+                showingSettings = true
+            } label: {
+                HStack(spacing: 14) {
+                    Image(systemName: "bell.fill")
+                        .font(.system(size: 16))
+                        .foregroundStyle(.purple)
+                        .frame(width: 32, height: 32)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.purple.opacity(0.15))
+                        )
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Reminders & Settings")
+                            .font(.body)
+                            .foregroundStyle(.white)
+                        Text("Set up nightly notifications")
+                            .font(.caption)
+                            .foregroundStyle(.white.opacity(0.5))
+                    }
+
+                    Spacer()
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.3))
+                }
+                .padding(.vertical, 12)
+                .padding(.horizontal, 16)
+                .background(
+                    RoundedRectangle(cornerRadius: 14)
+                        .fill(Color.white.opacity(0.05))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .strokeBorder(Color.white.opacity(0.08), lineWidth: 1)
+                        )
+                )
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 20)
+    }
+
     // MARK: - Reset Section
 
     private var resetSection: some View {
         VStack(spacing: 16) {
-            Divider()
-                .background(Color.white.opacity(0.1))
-
             Button {
                 showingResetConfirmation = true
             } label: {

@@ -8,10 +8,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Phase 6: Nightly reminder notifications
 - Phase 7: Paywall and premium features
 - Phase 8: UX polish and accessibility
 - Phase 9: App Store readiness
+
+---
+
+## [0.3.0] - 2025-01-26
+
+### Added
+- **NotificationService**: Handles notification authorization and scheduling
+- **SettingsView**: Full settings screen with reminder controls
+- **SettingsViewModel**: MVVM state management for settings
+- **Reminder Toggle**: Enable/disable daily notifications
+- **Time Picker**: Select reminder time with wheel picker
+- **Custom Message**: Premium users can customize notification text
+- **Permission Handling**: Graceful denial handling with Settings redirect
+
+### Changed
+- EditRoutineView now links to Settings via "Reminders & Settings" button
+- Paywall placeholder updated to mention custom reminder messages
 
 ---
 
@@ -69,6 +85,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.0.1 | 2025-01-25 | Project setup |
 | 0.1.0 | 2025-01-25 | Tonight screen working with persistence |
 | 0.2.0 | 2025-01-26 | Edit routine working |
-| 0.3.0 | TBD | Notifications working |
+| 0.3.0 | 2025-01-26 | Notifications working |
 | 0.4.0 | TBD | Premium purchase working |
 | 1.0.0 | TBD | App Store release |

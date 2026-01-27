@@ -23,6 +23,9 @@
 		A1000040229F0001 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000040229F0000 /* OnboardingView.swift */; };
 		A1000050229F0001 /* EditRoutineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000050229F0000 /* EditRoutineView.swift */; };
 		A1000051229F0001 /* EditRoutineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000051229F0000 /* EditRoutineViewModel.swift */; };
+		A1000060229F0001 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000060229F0000 /* NotificationService.swift */; };
+		A1000061229F0001 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000061229F0000 /* SettingsView.swift */; };
+		A1000062229F0001 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000062229F0000 /* SettingsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +46,9 @@
 		A1000040229F0000 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		A1000050229F0000 /* EditRoutineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRoutineView.swift; sourceTree = "<group>"; };
 		A1000051229F0000 /* EditRoutineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditRoutineViewModel.swift; sourceTree = "<group>"; };
+		A1000060229F0000 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		A1000061229F0000 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A1000062229F0000 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,7 @@
 				A1000003229F0000 /* TonightView.swift */,
 				A1000040229F0000 /* OnboardingView.swift */,
 				A1000050229F0000 /* EditRoutineView.swift */,
+				A1000061229F0000 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -115,6 +122,7 @@
 			children = (
 				A1000020229F0000 /* TonightViewModel.swift */,
 				A1000051229F0000 /* EditRoutineViewModel.swift */,
+				A1000062229F0000 /* SettingsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -123,6 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				A1000030229F0000 /* PersistenceService.swift */,
+				A1000060229F0000 /* NotificationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -235,6 +244,9 @@
 				A1000040229F0001 /* OnboardingView.swift in Sources */,
 				A1000050229F0001 /* EditRoutineView.swift in Sources */,
 				A1000051229F0001 /* EditRoutineViewModel.swift in Sources */,
+				A1000060229F0001 /* NotificationService.swift in Sources */,
+				A1000061229F0001 /* SettingsView.swift in Sources */,
+				A1000062229F0001 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

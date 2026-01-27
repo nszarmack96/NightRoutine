@@ -2,7 +2,7 @@
 
 This document tracks the implementation phases for the Night Routine Wind-Down app.
 
-**Current Phase:** 6 - Nightly Reminder Notifications
+**Current Phase:** 7 - Paywall + Entitlements
 
 ---
 
@@ -128,21 +128,21 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 
 ---
 
-## Phase 6: Nightly Reminder Notifications
+## Phase 6: Nightly Reminder Notifications - COMPLETE
 
-- [ ] Request notification permission
-  - [ ] Friendly one-time prompt with explanation
-  - [ ] Handle denial gracefully
+- [x] Request notification permission
+  - [x] Friendly one-time prompt with explanation
+  - [x] Handle denial gracefully
 
-- [ ] Create Settings screen
-  - [ ] Toggle reminder on/off
-  - [ ] Time picker for reminder time
-  - [ ] Custom reminder message field (premium only)
+- [x] Create Settings screen
+  - [x] Toggle reminder on/off
+  - [x] Time picker for reminder time
+  - [x] Custom reminder message field (premium only)
 
-- [ ] Implement notification scheduling
-  - [ ] Schedule repeating daily local notification
-  - [ ] Update schedule when time changes
-  - [ ] Cancel notifications when disabled
+- [x] Implement notification scheduling
+  - [x] Schedule repeating daily local notification
+  - [x] Update schedule when time changes
+  - [x] Cancel notifications when disabled
 
 **Deliverable:** Reminders fire daily at the chosen time.
 
@@ -256,7 +256,7 @@ These are explicitly **not** in scope for MVP:
 | 3 | Complete | Core checklist functionality |
 | 4 | Complete | Streak tracking |
 | 5 | Complete | Routine customization |
-| 6 | Not Started | Daily reminders |
+| 6 | Complete | Daily reminders |
 | 7 | Not Started | Premium purchase |
 | 8 | Not Started | Polish and accessibility |
 | 9 | Not Started | App Store ready |
