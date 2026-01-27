@@ -5,10 +5,10 @@ enum AppConstants {
     static let appVersion = "1.0.0"
     static let bundleIdentifier = "io.nightroutine.app"
 
-    // Support URLs
-    static let privacyPolicyURL = URL(string: "https://nightroutine.io/privacy")!
+    // Support URLs (hosted on GitHub Pages)
+    static let privacyPolicyURL = URL(string: "https://nszarmack96.github.io/NightRoutine/privacy.html")!
     static let supportEmail = "support@nightroutine.io"
-    static let termsOfServiceURL = URL(string: "https://nightroutine.io/terms")!
+    static let termsOfServiceURL = URL(string: "https://nszarmack96.github.io/NightRoutine/terms.html")!
 
     // Free tier limits
     static let freeTierStepLimit = 6
