@@ -67,8 +67,7 @@ struct EditRoutineView: View {
                 Text("This will replace your current routine with the default steps.")
             }
             .sheet(isPresented: $viewModel.showingPaywall) {
-                PaywallPlaceholderView()
-                    .presentationDetents([.medium])
+                PaywallView()
             }
             .sheet(isPresented: $showingSettings) {
                 SettingsView()
@@ -348,75 +347,6 @@ struct EditStepSheet: View {
             title = step.title
         }
         .preferredColorScheme(.dark)
-    }
-}
-
-// MARK: - Paywall Placeholder
-
-struct PaywallPlaceholderView: View {
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            ZStack {
-                LinearGradient(
-                    colors: [.purple.opacity(0.3), .black],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
-
-                VStack(spacing: 24) {
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 48))
-                        .foregroundStyle(.yellow)
-
-                    Text("Unlock Premium")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.white)
-
-                    VStack(alignment: .leading, spacing: 12) {
-                        FeatureRow(icon: "infinity", text: "Unlimited steps")
-                        FeatureRow(icon: "bell.badge", text: "Custom reminder messages")
-                        FeatureRow(icon: "paintpalette", text: "Extra themes")
-                    }
-                    .padding(.horizontal, 40)
-
-                    Text("Coming soon in Phase 7!")
-                        .font(.caption)
-                        .foregroundStyle(.white.opacity(0.5))
-                        .padding(.top)
-
-                    Spacer()
-                }
-                .padding(.top, 40)
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Close") {
-                        dismiss()
-                    }
-                }
-            }
-        }
-        .preferredColorScheme(.dark)
-    }
-}
-
-struct FeatureRow: View {
-    let icon: String
-    let text: String
-
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 16))
-                .foregroundStyle(.yellow)
-                .frame(width: 24)
-            Text(text)
-                .foregroundStyle(.white)
-        }
     }
 }
 

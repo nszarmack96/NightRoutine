@@ -2,7 +2,7 @@
 
 This document tracks the implementation phases for the Night Routine Wind-Down app.
 
-**Current Phase:** 7 - Paywall + Entitlements
+**Current Phase:** 8 - Polished UX (MVP-Polish)
 
 ---
 
@@ -148,32 +148,32 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 
 ---
 
-## Phase 7: Paywall + Entitlements
+## Phase 7: Paywall + Entitlements - COMPLETE
 
 ### Monetization: One-time "Lifetime Premium" unlock
 
-- [ ] Configure StoreKit 2
-  - [ ] Create non-consumable product: `premium_lifetime`
-  - [ ] Set up App Store Connect product
+- [x] Configure StoreKit 2
+  - [x] Create non-consumable product: `premium_lifetime`
+  - [x] Set up StoreKit configuration for testing
 
-- [ ] Define premium features
-  - [ ] Unlimited steps (free tier = 6)
-  - [ ] Custom reminder message
-  - [ ] (Optional) Extra themes
+- [x] Define premium features
+  - [x] Unlimited steps (free tier = 6)
+  - [x] Custom reminder message
+  - [x] (Optional) Extra themes
 
-- [ ] Build paywall screen
-  - [ ] Clear value proposition bullets
-  - [ ] Price button with localized price
-  - [ ] Restore purchases button
-  - [ ] Terms/Privacy links
+- [x] Build paywall screen
+  - [x] Clear value proposition bullets
+  - [x] Price button with localized price
+  - [x] Restore purchases button
+  - [x] Terms/Privacy links
 
-- [ ] Implement purchase flow
-  - [ ] Handle purchase success
-  - [ ] Handle purchase failure/cancellation
-  - [ ] Cache entitlement state locally
-  - [ ] Validate with StoreKit on launch
+- [x] Implement purchase flow
+  - [x] Handle purchase success
+  - [x] Handle purchase failure/cancellation
+  - [x] Cache entitlement state locally
+  - [x] Validate with StoreKit on launch
 
-- [ ] Add restore purchases flow
+- [x] Add restore purchases flow
 
 **Deliverable:** Purchase unlocks features, restore works.
 
@@ -257,6 +257,6 @@ These are explicitly **not** in scope for MVP:
 | 4 | Complete | Streak tracking |
 | 5 | Complete | Routine customization |
 | 6 | Complete | Daily reminders |
-| 7 | Not Started | Premium purchase |
+| 7 | Complete | Premium purchase |
 | 8 | Not Started | Polish and accessibility |
 | 9 | Not Started | App Store ready |

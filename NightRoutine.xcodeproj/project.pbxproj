@@ -26,6 +26,9 @@
 		A1000060229F0001 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000060229F0000 /* NotificationService.swift */; };
 		A1000061229F0001 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000061229F0000 /* SettingsView.swift */; };
 		A1000062229F0001 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000062229F0000 /* SettingsViewModel.swift */; };
+		A1000070229F0001 /* StoreKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000070229F0000 /* StoreKitService.swift */; };
+		A1000071229F0001 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000071229F0000 /* PaywallView.swift */; };
+		A1000072229F0001 /* PaywallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000072229F0000 /* PaywallViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +52,10 @@
 		A1000060229F0000 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A1000061229F0000 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A1000062229F0000 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		A1000070229F0000 /* StoreKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitService.swift; sourceTree = "<group>"; };
+		A1000071229F0000 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		A1000072229F0000 /* PaywallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallViewModel.swift; sourceTree = "<group>"; };
+		A1000073229F0000 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +120,7 @@
 				A1000040229F0000 /* OnboardingView.swift */,
 				A1000050229F0000 /* EditRoutineView.swift */,
 				A1000061229F0000 /* SettingsView.swift */,
+				A1000071229F0000 /* PaywallView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -123,6 +131,7 @@
 				A1000020229F0000 /* TonightViewModel.swift */,
 				A1000051229F0000 /* EditRoutineViewModel.swift */,
 				A1000062229F0000 /* SettingsViewModel.swift */,
+				A1000072229F0000 /* PaywallViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -132,6 +141,7 @@
 			children = (
 				A1000030229F0000 /* PersistenceService.swift */,
 				A1000060229F0000 /* NotificationService.swift */,
+				A1000070229F0000 /* StoreKitService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -140,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				A1000005229F0000 /* Assets.xcassets */,
+				A1000073229F0000 /* Products.storekit */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -247,6 +258,9 @@
 				A1000060229F0001 /* NotificationService.swift in Sources */,
 				A1000061229F0001 /* SettingsView.swift in Sources */,
 				A1000062229F0001 /* SettingsViewModel.swift in Sources */,
+				A1000070229F0001 /* StoreKitService.swift in Sources */,
+				A1000071229F0001 /* PaywallView.swift in Sources */,
+				A1000072229F0001 /* PaywallViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

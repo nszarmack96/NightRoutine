@@ -8,9 +8,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Phase 7: Paywall and premium features
 - Phase 8: UX polish and accessibility
 - Phase 9: App Store readiness
+
+---
+
+## [0.4.0] - 2025-01-26
+
+### Added
+- **StoreKitService**: Full StoreKit 2 integration for in-app purchases
+- **PaywallView**: Professional paywall screen with feature highlights
+- **PaywallViewModel**: MVVM state management for purchase flow
+- **Products.storekit**: StoreKit configuration file for testing
+- **Lifetime Premium Product**: One-time $4.99 purchase unlocks all features
+- **Purchase Flow**: Complete purchase and restore functionality
+- **Success State**: Animated success view after purchase completion
+
+### Changed
+- Replaced PaywallPlaceholder with real PaywallView
+- EditRoutineView now shows actual paywall when step limit reached
+- Premium status persists locally after purchase verification
 
 ---
 
@@ -86,5 +103,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.1.0 | 2025-01-25 | Tonight screen working with persistence |
 | 0.2.0 | 2025-01-26 | Edit routine working |
 | 0.3.0 | 2025-01-26 | Notifications working |
-| 0.4.0 | TBD | Premium purchase working |
+| 0.4.0 | 2025-01-26 | Premium purchase working |
 | 1.0.0 | TBD | App Store release |
