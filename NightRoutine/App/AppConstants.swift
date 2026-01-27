@@ -2,8 +2,13 @@ import Foundation
 
 enum AppConstants {
     static let appName = "Night Routine"
-    static let appVersion = "0.1.0"
+    static let appVersion = "1.0.0"
     static let bundleIdentifier = "io.nightroutine.app"
+
+    // Support URLs
+    static let privacyPolicyURL = URL(string: "https://nightroutine.io/privacy")!
+    static let supportEmail = "support@nightroutine.io"
+    static let termsOfServiceURL = URL(string: "https://nightroutine.io/terms")!
 
     // Free tier limits
     static let freeTierStepLimit = 6

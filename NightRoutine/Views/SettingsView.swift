@@ -166,32 +166,63 @@ struct SettingsView: View {
                     .foregroundStyle(.white)
             }
 
-            SettingsRow(
-                icon: "doc.text.fill",
-                iconColor: .gray,
-                title: "Privacy Policy",
-                subtitle: nil
-            ) {
-                Image(systemName: "arrow.up.right")
-                    .font(.system(size: 12))
-                    .foregroundStyle(.white.opacity(0.3))
+            // Privacy Policy
+            Button {
+                UIApplication.shared.open(AppConstants.privacyPolicyURL)
+            } label: {
+                SettingsRow(
+                    icon: "doc.text.fill",
+                    iconColor: .gray,
+                    title: "Privacy Policy",
+                    subtitle: nil
+                ) {
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.white.opacity(0.3))
+                }
             }
+            .buttonStyle(.plain)
 
-            SettingsRow(
-                icon: "envelope.fill",
-                iconColor: .gray,
-                title: "Support",
-                subtitle: nil
-            ) {
-                Image(systemName: "arrow.up.right")
-                    .font(.system(size: 12))
-                    .foregroundStyle(.white.opacity(0.3))
+            // Terms of Service
+            Button {
+                UIApplication.shared.open(AppConstants.termsOfServiceURL)
+            } label: {
+                SettingsRow(
+                    icon: "doc.plaintext.fill",
+                    iconColor: .gray,
+                    title: "Terms of Service",
+                    subtitle: nil
+                ) {
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.white.opacity(0.3))
+                }
             }
+            .buttonStyle(.plain)
+
+            // Support Email
+            Button {
+                if let url = URL(string: "mailto:\(AppConstants.supportEmail)") {
+                    UIApplication.shared.open(url)
+                }
+            } label: {
+                SettingsRow(
+                    icon: "envelope.fill",
+                    iconColor: .gray,
+                    title: "Contact Support",
+                    subtitle: AppConstants.supportEmail
+                ) {
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.white.opacity(0.3))
+                }
+            }
+            .buttonStyle(.plain)
 
             // Version info
             HStack {
                 Spacer()
-                Text("Night Routine v0.3.0")
+                Text("Night Routine v\(AppConstants.appVersion)")
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.3))
                 Spacer()

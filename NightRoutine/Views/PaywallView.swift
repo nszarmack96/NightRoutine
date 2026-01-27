@@ -154,11 +154,11 @@ struct PaywallView: View {
                 // Legal links
                 HStack(spacing: 16) {
                     Button("Terms of Service") {
-                        // Open terms URL
+                        UIApplication.shared.open(AppConstants.termsOfServiceURL)
                     }
                     Text("·")
                     Button("Privacy Policy") {
-                        // Open privacy URL
+                        UIApplication.shared.open(AppConstants.privacyPolicyURL)
                     }
                 }
                 .font(.caption)

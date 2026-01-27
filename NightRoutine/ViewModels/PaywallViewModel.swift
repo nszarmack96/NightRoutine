@@ -32,7 +32,7 @@ final class PaywallViewModel: ObservableObject {
 
     func purchase() async {
         guard let product = product else {
-            errorMessage = "Product not available"
+            errorMessage = "Unable to load product. Please check your internet connection and try again."
             showingError = true
             return
         }
@@ -42,10 +42,14 @@ final class PaywallViewModel: ObservableObject {
         do {
             let success = try await storeKitService.purchase(product)
             if success {
+                HapticService.purchaseSuccess()
                 purchaseSuccessful = true
             }
+        } catch StoreKitError.failedVerification {
+            errorMessage = "Purchase verification failed. Please try again or contact support."
+            showingError = true
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = "Purchase could not be completed. Please try again."
             showingError = true
         }
 
@@ -57,9 +61,10 @@ final class PaywallViewModel: ObservableObject {
         await storeKitService.restorePurchases()
 
         if storeKitService.isPremium {
+            HapticService.purchaseSuccess()
             purchaseSuccessful = true
         } else {
-            errorMessage = "No previous purchase found"
+            errorMessage = "No previous purchase found. If you believe this is an error, please contact support."
             showingError = true
         }
 

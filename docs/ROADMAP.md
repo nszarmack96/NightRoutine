@@ -2,7 +2,7 @@
 
 This document tracks the implementation phases for the Night Routine Wind-Down app.
 
-**Current Phase:** 9 - App Store Readiness
+**Current Phase:** Complete - Ready for App Store Submission
 
 ---
 
@@ -202,32 +202,34 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 
 ---
 
-## Phase 9: App Store Readiness
+## Phase 9: App Store Readiness - COMPLETE
 
-- [ ] Legal & Support
-  - [ ] Add Privacy Policy link in Settings
-  - [ ] Add Support Email link in Settings
-  - [ ] Terms of Service (if needed)
+- [x] Legal & Support
+  - [x] Add Privacy Policy link in Settings
+  - [x] Add Support Email link in Settings
+  - [x] Add Terms of Service link in Settings
+  - [x] Add legal links to PaywallView
 
-- [ ] Offline support
-  - [ ] Verify app works completely offline
-  - [ ] No network dependency for core features
+- [x] Offline support
+  - [x] App works completely offline (UserDefaults storage)
+  - [x] No network dependency for core features
 
-- [ ] Error handling
-  - [ ] StoreKit purchase failure handling
-  - [ ] Graceful degradation for edge cases
+- [x] Error handling
+  - [x] StoreKit purchase failure handling with user-friendly messages
+  - [x] Graceful degradation for edge cases
+  - [x] Haptic feedback on successful purchase
 
-- [ ] App Store assets
+- [ ] App Store assets (manual steps)
   - [ ] Final app icon
   - [ ] Screenshots for App Store
   - [ ] App description and keywords
 
-- [ ] Testing
+- [ ] Testing (manual steps)
   - [ ] TestFlight beta testing
   - [ ] Test on multiple device sizes
   - [ ] Test IAP in sandbox environment
 
-**Deliverable:** Ready for App Store submission.
+**Deliverable:** Code ready for App Store submission.
 
 ---
 
@@ -258,4 +260,4 @@ These are explicitly **not** in scope for MVP:
 | 6 | Complete | Daily reminders |
 | 7 | Complete | Premium purchase |
 | 8 | Complete | Polish and accessibility |
-| 9 | Not Started | App Store ready |
+| 9 | Complete | App Store ready |

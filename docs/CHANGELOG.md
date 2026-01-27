@@ -8,7 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Phase 9: App Store readiness
+- App Store submission
+- TestFlight beta testing
+
+---
+
+## [1.0.0] - 2026-01-26
+
+### Added
+- **Privacy Policy Link**: Tappable link in Settings opens privacy policy
+- **Terms of Service Link**: Tappable link in Settings opens terms
+- **Contact Support**: Email link in Settings with support address
+- **Legal Links in Paywall**: Terms and Privacy links in purchase screen
+- **Improved Error Messages**: User-friendly purchase error handling
+- **Purchase Success Haptic**: Haptic feedback on successful purchase
+
+### Changed
+- Version updated to 1.0.0 for App Store release
+- PaywallViewModel provides clearer error messages for purchase failures
+- Settings now uses AppConstants for version display
 
 ---
 
@@ -121,4 +139,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.3.0 | 2025-01-26 | Notifications working |
 | 0.4.0 | 2025-01-26 | Premium purchase working |
 | 0.5.0 | 2026-01-26 | UX polish and accessibility |
-| 1.0.0 | TBD | App Store release |
+| 1.0.0 | 2026-01-26 | App Store ready |
