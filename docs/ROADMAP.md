@@ -2,7 +2,7 @@
 
 This document tracks the implementation phases for the Night Routine Wind-Down app.
 
-**Current Phase:** 5 - Edit Routine
+**Current Phase:** 6 - Nightly Reminder Notifications
 
 ---
 
@@ -108,21 +108,21 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 
 ---
 
-## Phase 5: Edit Routine (Basic Customization)
+## Phase 5: Edit Routine (Basic Customization) - COMPLETE
 
-- [ ] Create "Edit Routine" screen
-  - [ ] Navigate from Tonight screen (gear icon or edit button)
+- [x] Create "Edit Routine" screen
+  - [x] Navigate from Tonight screen (gear icon or edit button)
 
-- [ ] Implement editing features
-  - [ ] Reorder steps (drag to reorder)
-  - [ ] Toggle steps enabled/disabled
-  - [ ] Edit step title (inline or modal)
-  - [ ] Add new step
-  - [ ] Delete step (swipe to delete)
+- [x] Implement editing features
+  - [x] Reorder steps (drag to reorder)
+  - [x] Toggle steps enabled/disabled
+  - [x] Edit step title (inline or modal)
+  - [x] Add new step
+  - [x] Delete step (swipe to delete)
 
-- [ ] Enforce free-tier limit
-  - [ ] Check step count before adding
-  - [ ] If user is free and tries to add > 6 steps, show paywall
+- [x] Enforce free-tier limit
+  - [x] Check step count before adding
+  - [x] If user is free and tries to add > 6 steps, show paywall
 
 **Deliverable:** User can fully customize routine (within tier limits).
 
@@ -255,7 +255,7 @@ These are explicitly **not** in scope for MVP:
 | 2 | Complete | Default routine for new users |
 | 3 | Complete | Core checklist functionality |
 | 4 | Complete | Streak tracking |
-| 5 | In Progress | Routine customization |
+| 5 | Complete | Routine customization |
 | 6 | Not Started | Daily reminders |
 | 7 | Not Started | Premium purchase |
 | 8 | Not Started | Polish and accessibility |

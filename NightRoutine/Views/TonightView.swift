@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TonightView: View {
     @StateObject private var viewModel = TonightViewModel()
+    @State private var showingEditRoutine = false
 
     private var currentDate: String {
         let formatter = DateFormatter()
@@ -55,12 +56,17 @@ struct TonightView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        // TODO: Navigate to settings/edit
+                        showingEditRoutine = true
                     } label: {
                         Image(systemName: "gearshape")
                             .foregroundStyle(.white.opacity(0.5))
                     }
                 }
+            }
+            .sheet(isPresented: $showingEditRoutine, onDismiss: {
+                viewModel.loadData()
+            }) {
+                EditRoutineView()
             }
         }
         .onAppear {
