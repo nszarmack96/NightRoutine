@@ -3,6 +3,7 @@ import SwiftUI
 struct TonightView: View {
     @StateObject private var viewModel = TonightViewModel()
     @State private var showingEditRoutine = false
+    @State private var previouslyComplete = false
 
     private var currentDate: String {
         let formatter = DateFormatter()
@@ -61,6 +62,7 @@ struct TonightView: View {
                         Image(systemName: "gearshape")
                             .foregroundStyle(.white.opacity(0.5))
                     }
+                    .accessibilityLabel("Edit routine settings")
                 }
             }
             .sheet(isPresented: $showingEditRoutine, onDismiss: {
@@ -126,9 +128,21 @@ struct TonightView: View {
                             isComplete: viewModel.isStepCompleted(step),
                             stepNumber: (viewModel.enabledSteps.firstIndex(of: step) ?? 0) + 1
                         ) {
+                            let wasComplete = viewModel.isStepCompleted(step)
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                 viewModel.toggleStep(step)
                             }
+                            // Haptic feedback
+                            if wasComplete {
+                                HapticService.stepToggle()
+                            } else {
+                                HapticService.stepComplete()
+                            }
+                            // Check if routine just completed
+                            if viewModel.allComplete && !previouslyComplete {
+                                HapticService.routineComplete()
+                            }
+                            previouslyComplete = viewModel.allComplete
                         }
                     }
                 }
@@ -211,11 +225,15 @@ struct TonightView: View {
                     withAnimation {
                         viewModel.resetTonight()
                     }
+                    HapticService.selection()
+                    previouslyComplete = false
                 } label: {
                     Text("Reset Routine")
                         .font(.footnote)
                         .foregroundStyle(.white.opacity(0.4))
                 }
+                .accessibilityLabel("Reset tonight's routine")
+                .accessibilityHint("Uncheck all completed steps")
                 .padding(.bottom, 40)
             }
         }
@@ -267,6 +285,7 @@ struct ProgressCard: View {
                 }
             }
             .frame(height: 8)
+            .accessibilityHidden(true)
         }
         .padding(20)
         .background(
@@ -277,6 +296,8 @@ struct ProgressCard: View {
                         .strokeBorder(Color.white.opacity(0.08), lineWidth: 1)
                 )
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Progress: \(completedCount) of \(totalCount) steps complete, \(Int(percentage * 100)) percent")
     }
 }
 
@@ -340,6 +361,9 @@ struct StepRow: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(title), step \(stepNumber)")
+        .accessibilityValue(isComplete ? "completed" : "not completed")
+        .accessibilityHint(isComplete ? "Double tap to unmark" : "Double tap to mark as complete")
     }
 }
 
@@ -364,6 +388,8 @@ struct StreakBadge: View {
             Capsule()
                 .fill(Color.orange.opacity(0.15))
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(count) day streak")
     }
 }
 

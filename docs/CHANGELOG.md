@@ -8,8 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
-- Phase 8: UX polish and accessibility
 - Phase 9: App Store readiness
+
+---
+
+## [0.5.0] - 2026-01-26
+
+### Added
+- **HapticService**: Centralized haptic feedback for all interactions
+- **Step Toggle Haptics**: Light impact when checking/unchecking steps
+- **Routine Complete Haptics**: Success notification when all steps done
+- **Selection Haptics**: Feedback on reset and other selections
+- **VoiceOver Labels**: Accessibility labels for StepRow, StreakBadge, ProgressCard
+- **Accessibility Hints**: Action hints for all interactive elements
+
+### Changed
+- TonightView now triggers haptic feedback on step interactions
+- Reset button includes selection haptic feedback
+- All UI components have proper accessibility labeling
 
 ---
 
@@ -104,4 +120,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.2.0 | 2025-01-26 | Edit routine working |
 | 0.3.0 | 2025-01-26 | Notifications working |
 | 0.4.0 | 2025-01-26 | Premium purchase working |
+| 0.5.0 | 2026-01-26 | UX polish and accessibility |
 | 1.0.0 | TBD | App Store release |

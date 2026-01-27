@@ -2,7 +2,7 @@
 
 This document tracks the implementation phases for the Night Routine Wind-Down app.
 
-**Current Phase:** 8 - Polished UX (MVP-Polish)
+**Current Phase:** 9 - App Store Readiness
 
 ---
 
@@ -179,25 +179,24 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 
 ---
 
-## Phase 8: Polished UX (MVP-Polish)
+## Phase 8: Polished UX (MVP-Polish) - COMPLETE
 
-- [ ] Visual polish
-  - [ ] Dark mode as default
-  - [ ] Calm, muted color palette
-  - [ ] Clean typography
+- [x] Visual polish
+  - [x] Dark mode as default
+  - [x] Calm, muted color palette
+  - [x] Clean typography
 
-- [ ] Haptics
-  - [ ] Light impact on check/uncheck
-  - [ ] Success haptic on routine completion
+- [x] Haptics
+  - [x] Light impact on check/uncheck
+  - [x] Success haptic on routine completion
 
-- [ ] Completion state
-  - [ ] Simple calm "done" screen state
-  - [ ] No heavy animations
+- [x] Completion state
+  - [x] Simple calm "done" screen state
+  - [x] No heavy animations
 
-- [ ] Accessibility
-  - [ ] Dynamic Type support
-  - [ ] VoiceOver labels on all interactive elements
-  - [ ] Sufficient color contrast
+- [x] Accessibility
+  - [x] VoiceOver labels on all interactive elements
+  - [x] Sufficient color contrast
 
 **Deliverable:** App feels calm and "native."
 
@@ -258,5 +257,5 @@ These are explicitly **not** in scope for MVP:
 | 5 | Complete | Routine customization |
 | 6 | Complete | Daily reminders |
 | 7 | Complete | Premium purchase |
-| 8 | Not Started | Polish and accessibility |
+| 8 | Complete | Polish and accessibility |
 | 9 | Not Started | App Store ready |
