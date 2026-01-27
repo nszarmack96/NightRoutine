@@ -2,6 +2,8 @@
 
 This document describes the technical design decisions and architecture for the Night Routine app.
 
+**Version:** 1.0.0 | **Last Updated:** January 2026
+
 ## Overview
 
 NightRoutine is a native iOS app built with SwiftUI, designed for simplicity and reliability. The app operates entirely offline with local-only data storage.
@@ -195,8 +197,8 @@ class TonightViewModel: ObservableObject {
 Services/
 ├── PersistenceService.swift   # UserDefaults wrapper
 ├── NotificationService.swift  # Local notification scheduling
-├── StoreService.swift         # StoreKit 2 purchases
-└── StreakService.swift        # Streak calculation logic
+├── StoreKitService.swift      # StoreKit 2 purchases
+└── HapticService.swift        # Haptic feedback management
 ```
 
 ---
@@ -257,10 +259,18 @@ class NotificationService {
 ### Product Configuration
 
 ```swift
-enum StoreProduct: String {
-    case lifetimePremium = "com.yourname.nightroutine.premium.lifetime"
+// Product ID defined in AppConstants
+enum ProductID: String {
+    case lifetimePremium = "io.nightroutine.premium.lifetime"
 }
 ```
+
+### Testing Configuration
+
+The project includes `Products.storekit` for simulator testing:
+- Product: Lifetime Premium ($4.99)
+- Type: Non-consumable
+- No App Store Connect setup required for testing
 
 ### Purchase Flow
 
@@ -302,7 +312,15 @@ class StoreService: ObservableObject {
 
 ```swift
 enum AppConstants {
-    static let appName = "NightRoutine"
+    static let appName = "Night Routine"
+    static let appVersion = "1.0.0"
+    static let bundleIdentifier = "io.nightroutine.app"
+
+    // Support URLs
+    static let privacyPolicyURL = URL(string: "https://nightroutine.io/privacy")!
+    static let supportEmail = "support@nightroutine.io"
+    static let termsOfServiceURL = URL(string: "https://nightroutine.io/terms")!
+
     static let freeTierStepLimit = 6
 
     static let defaultSteps = [
@@ -313,6 +331,28 @@ enum AppConstants {
         "Water",
         "Lights off"
     ]
+
+    enum ProductID: String {
+        case lifetimePremium = "io.nightroutine.premium.lifetime"
+    }
+}
+```
+
+---
+
+## Haptic Feedback
+
+The app uses `HapticService` for consistent tactile feedback:
+
+```swift
+enum HapticService {
+    static func stepToggle()      // Light impact - unchecking step
+    static func stepComplete()    // Medium impact - completing step
+    static func routineComplete() // Success notification - all steps done
+    static func purchaseSuccess() // Success notification - purchase complete
+    static func selection()       // Selection changed - UI interactions
+    static func warning()         // Warning notification
+    static func error()           // Error notification
 }
 ```
 

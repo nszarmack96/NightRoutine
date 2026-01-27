@@ -2,6 +2,8 @@
 
 A calm, focused iOS app to help you build a consistent nighttime wind-down routine.
 
+**Version:** 1.0.0 | **Status:** Ready for App Store Submission
+
 ## About
 
 NightRoutine helps users establish healthy bedtime habits through a simple, frictionless checklist experience. No social features, no gamification pressure — just a peaceful way to end your day.
@@ -12,7 +14,9 @@ NightRoutine helps users establish healthy bedtime habits through a simple, fric
 - **Customizable Steps**: Add, remove, reorder, and rename routine steps
 - **Gentle Streaks**: Track consistency without shame or pressure
 - **Nightly Reminders**: Optional local notifications at your chosen time
-- **Premium Upgrade**: One-time purchase for unlimited steps and custom reminders
+- **Premium Upgrade**: One-time $4.99 purchase for unlimited steps and custom reminders
+- **Haptic Feedback**: Tactile responses for all interactions
+- **Full Accessibility**: VoiceOver support throughout
 
 ## Tech Stack
 
@@ -29,9 +33,17 @@ NightRoutine helps users establish healthy bedtime habits through a simple, fric
 
 ### Prerequisites
 
-- Xcode 15.0 or later
+- Xcode 15.0 or later (tested with Xcode 17)
 - iOS 16.0+ deployment target
 - Apple Developer account (for testing IAP and notifications)
+
+### Testing In-App Purchases
+
+The project includes a `Products.storekit` configuration file for testing purchases in the simulator:
+
+1. In Xcode, go to Product → Scheme → Edit Scheme
+2. Under Run → Options, set StoreKit Configuration to `Products.storekit`
+3. Build and run — purchases will work in the simulator without a real App Store Connect setup
 
 ### Setup
 
@@ -73,6 +85,19 @@ NightRoutine_App/
 - [Roadmap](docs/ROADMAP.md) - MVP phases and task tracking
 - [Architecture](docs/ARCHITECTURE.md) - Technical design and data models
 - [Changelog](docs/CHANGELOG.md) - Version history
+
+## App Store Checklist
+
+Before submitting to the App Store:
+
+- [ ] Create final app icon (1024x1024)
+- [ ] Capture screenshots for all required device sizes
+- [ ] Write App Store description and keywords
+- [ ] Set up Privacy Policy page at nightroutine.io/privacy
+- [ ] Set up Terms of Service page at nightroutine.io/terms
+- [ ] Configure App Store Connect with IAP product
+- [ ] Submit for TestFlight beta testing
+- [ ] Test IAP in sandbox environment on real device
 
 ## License
 
