@@ -65,6 +65,11 @@ struct SettingsView: View {
                 )
                 .presentationDetents([.height(280)])
             }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                Task {
+                    await viewModel.refreshPermissionStatus()
+                }
+            }
         }
     }
 
@@ -310,7 +315,9 @@ struct SettingsView: View {
 
             // Rate App
             Button {
-                requestReview()
+                if let url = URL(string: "https://apps.apple.com/app/id\(AppConstants.appStoreID)?action=write-review") {
+                    UIApplication.shared.open(url)
+                }
             } label: {
                 SettingsRow(
                     icon: "star.fill",
@@ -318,7 +325,7 @@ struct SettingsView: View {
                     title: "Rate Night Routine",
                     subtitle: "Help us grow"
                 ) {
-                    Image(systemName: "chevron.right")
+                    Image(systemName: "arrow.up.right")
                         .font(.system(size: 12))
                         .foregroundStyle(.white.opacity(0.3))
                 }

@@ -89,6 +89,10 @@ final class SettingsViewModel: ObservableObject {
 
     func refreshPermissionStatus() async {
         await notificationService.checkAuthorizationStatus()
-        permissionDenied = notificationService.isDenied
+        if notificationService.isAuthorized {
+            permissionDenied = false
+        } else {
+            permissionDenied = notificationService.isDenied
+        }
     }
 }

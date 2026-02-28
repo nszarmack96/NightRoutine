@@ -45,6 +45,14 @@ struct PaywallView: View {
         .task {
             await viewModel.loadProducts()
         }
+        .task(id: "retry") {
+            // Auto-retry once after 6 seconds if products still haven't loaded
+            // (covers edge cases where initial retries all failed)
+            try? await Task.sleep(nanoseconds: 6_000_000_000)
+            if viewModel.product == nil && !viewModel.isLoading {
+                await viewModel.loadProducts()
+            }
+        }
     }
 
     // MARK: - Purchase View
@@ -122,14 +130,12 @@ struct PaywallView: View {
                                 .progressViewStyle(CircularProgressViewStyle(tint: .black))
                             Text("Processing...")
                                 .fontWeight(.semibold)
-                        } else if viewModel.isLoading {
+                        } else if viewModel.isLoading || (viewModel.product == nil) {
                             ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .black))
-                            Text("Loading...")
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            Text("Loading price...")
                                 .fontWeight(.semibold)
-                        } else if viewModel.product == nil {
-                            Text("Unable to load price")
-                                .fontWeight(.semibold)
+                                .foregroundStyle(.white.opacity(0.7))
                         } else {
                             Text("Unlock for \(viewModel.priceString)")
                                 .fontWeight(.semibold)
@@ -139,31 +145,15 @@ struct PaywallView: View {
                     .padding(.vertical, 18)
                     .background(
                         LinearGradient(
-                            colors: viewModel.product == nil ? [.gray, .gray.opacity(0.8)] : [.yellow, .orange],
+                            colors: viewModel.product != nil ? [.yellow, .orange] : [.gray.opacity(0.4), .gray.opacity(0.3)],
                             startPoint: .leading,
                             endPoint: .trailing
                         )
                     )
-                    .foregroundStyle(.black)
+                    .foregroundStyle(viewModel.product != nil ? .black : .white)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
                 .disabled(viewModel.isPurchasing || viewModel.isLoading || viewModel.product == nil)
-
-                // Retry loading button if products failed
-                if viewModel.product == nil && !viewModel.isLoading {
-                    Button {
-                        Task {
-                            await viewModel.signInAndLoad()
-                        }
-                    } label: {
-                        HStack(spacing: 6) {
-                            Image(systemName: "arrow.clockwise")
-                            Text("Sign in to Load Price")
-                        }
-                        .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.6))
-                    }
-                }
 
                 // Restore button
                 Button {

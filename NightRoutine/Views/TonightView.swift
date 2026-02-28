@@ -485,13 +485,16 @@ struct StepRowWithNote: View {
                 rowContent
             }
             .buttonStyle(.plain)
-            .onLongPressGesture {
-                if hasNote {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        showingNote.toggle()
+            .simultaneousGesture(
+                LongPressGesture(minimumDuration: 0.5)
+                    .onEnded { _ in
+                        if hasNote {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                showingNote.toggle()
+                            }
+                        }
                     }
-                }
-            }
+            )
         }
         .accessibilityLabel("\(step.title), step \(stepNumber)")
         .accessibilityValue(isComplete ? "completed" : "not completed")

@@ -4,6 +4,7 @@ enum AppConstants {
     static let appName = "Night Routine"
     static let appVersion = "1.1.2"
     static let bundleIdentifier = "io.nightroutine.app"
+    static let appStoreID = "6758357812"
 
     // Support URLs (hosted on GitHub Pages)
     static let privacyPolicyURL = URL(string: "https://nszarmack96.github.io/NightRoutine/privacy.html")!

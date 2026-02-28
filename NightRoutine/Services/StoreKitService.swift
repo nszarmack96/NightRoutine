@@ -45,11 +45,30 @@ final class StoreKitService: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        do {
-            products = try await Product.products(for: productIDs)
-            print("StoreKitService: Loaded \(products.count) products")
-        } catch {
-            print("StoreKitService: Failed to load products: \(error)")
+        // StoreKit 2 can return an empty array on first launch while it initializes
+        // its connection to the App Store. Retry up to 3 times with delays.
+        var loaded: [Product] = []
+        for attempt in 1...3 {
+            do {
+                loaded = try await Product.products(for: productIDs)
+                if !loaded.isEmpty {
+                    print("StoreKitService: Loaded \(loaded.count) products on attempt \(attempt)")
+                    break
+                }
+                print("StoreKitService: Empty response on attempt \(attempt), retrying...")
+            } catch {
+                print("StoreKitService: Error on attempt \(attempt): \(error)")
+            }
+
+            if attempt < 3 {
+                try? await Task.sleep(nanoseconds: 2_000_000_000) // wait 2s before retry
+            }
+        }
+
+        products = loaded
+
+        if products.isEmpty {
+            print("StoreKitService: Failed to load products after 3 attempts")
             errorMessage = "Unable to load products. Please try again."
         }
 
