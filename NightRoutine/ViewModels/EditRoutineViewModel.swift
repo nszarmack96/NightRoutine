@@ -98,7 +98,7 @@ final class EditRoutineViewModel: ObservableObject {
         }
     }
 
-    private func saveSteps() {
+    func saveSteps() {
         persistence.saveSteps(steps)
     }
 }

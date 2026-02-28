@@ -1,7 +1,9 @@
 import SwiftUI
+import StoreKit
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.requestReview) private var requestReview
     @StateObject private var viewModel = SettingsViewModel()
     @State private var showingTimePicker = false
 
@@ -300,6 +302,23 @@ struct SettingsView: View {
                     subtitle: AppConstants.supportEmail
                 ) {
                     Image(systemName: "arrow.up.right")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.white.opacity(0.3))
+                }
+            }
+            .buttonStyle(.plain)
+
+            // Rate App
+            Button {
+                requestReview()
+            } label: {
+                SettingsRow(
+                    icon: "star.fill",
+                    iconColor: .yellow,
+                    title: "Rate Night Routine",
+                    subtitle: "Help us grow"
+                ) {
+                    Image(systemName: "chevron.right")
                         .font(.system(size: 12))
                         .foregroundStyle(.white.opacity(0.3))
                 }

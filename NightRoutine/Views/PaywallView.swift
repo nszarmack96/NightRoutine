@@ -117,9 +117,19 @@ struct PaywallView: View {
                     }
                 } label: {
                     HStack {
-                        if viewModel.isPurchasing || viewModel.isLoading {
+                        if viewModel.isPurchasing {
                             ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle(tint: .black))
+                            Text("Processing...")
+                                .fontWeight(.semibold)
+                        } else if viewModel.isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .black))
+                            Text("Loading...")
+                                .fontWeight(.semibold)
+                        } else if viewModel.product == nil {
+                            Text("Unable to load price")
+                                .fontWeight(.semibold)
                         } else {
                             Text("Unlock for \(viewModel.priceString)")
                                 .fontWeight(.semibold)
@@ -129,7 +139,7 @@ struct PaywallView: View {
                     .padding(.vertical, 18)
                     .background(
                         LinearGradient(
-                            colors: [.yellow, .orange],
+                            colors: viewModel.product == nil ? [.gray, .gray.opacity(0.8)] : [.yellow, .orange],
                             startPoint: .leading,
                             endPoint: .trailing
                         )
@@ -138,6 +148,22 @@ struct PaywallView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
                 .disabled(viewModel.isPurchasing || viewModel.isLoading || viewModel.product == nil)
+
+                // Retry loading button if products failed
+                if viewModel.product == nil && !viewModel.isLoading {
+                    Button {
+                        Task {
+                            await viewModel.signInAndLoad()
+                        }
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "arrow.clockwise")
+                            Text("Sign in to Load Price")
+                        }
+                        .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.6))
+                    }
+                }
 
                 // Restore button
                 Button {

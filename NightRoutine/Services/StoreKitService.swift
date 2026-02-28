@@ -104,10 +104,29 @@ final class StoreKitService: ObservableObject {
         do {
             try await AppStore.sync()
             await updatePurchasedProducts()
+            // Reload products after sign-in - fixes "Unable to load price" on first open
+            if products.isEmpty {
+                await loadProducts()
+            }
             print("StoreKitService: Restore completed")
         } catch {
             print("StoreKitService: Restore failed: \(error)")
             errorMessage = "Unable to restore purchases. Please try again."
+        }
+
+        isLoading = false
+    }
+
+    func signInAndLoadProducts() async {
+        isLoading = true
+        errorMessage = nil
+
+        do {
+            try await AppStore.sync()
+            await loadProducts()
+        } catch {
+            print("StoreKitService: Sign in failed: \(error)")
+            await loadProducts()
         }
 
         isLoading = false

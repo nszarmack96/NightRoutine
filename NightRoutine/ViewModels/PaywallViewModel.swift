@@ -74,4 +74,8 @@ final class PaywallViewModel: ObservableObject {
     func loadProducts() async {
         await storeKitService.loadProducts()
     }
+
+    func signInAndLoad() async {
+        await storeKitService.signInAndLoadProducts()
+    }
 }

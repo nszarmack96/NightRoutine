@@ -117,25 +117,67 @@ struct TonightView: View {
     private var checklistView: some View {
         ScrollView {
             VStack(spacing: 0) {
-                // Header section
-                VStack(alignment: .leading, spacing: 8) {
+                // App branding header
+                HStack(spacing: 12) {
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [.purple.opacity(0.3), .indigo.opacity(0.2)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 48, height: 48)
+
+                        Image(systemName: "moon.stars.fill")
+                            .font(.system(size: 22))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.purple, .indigo],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                    }
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Night Routine")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.white)
+                        Text(currentDate)
+                            .font(.caption)
+                            .foregroundStyle(.white.opacity(0.4))
+                    }
+
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 12)
+                .padding(.bottom, 20)
+
+                // Greeting section
+                VStack(alignment: .leading, spacing: 6) {
                     Text(greeting)
                         .font(.subheadline)
                         .foregroundStyle(.white.opacity(0.5))
 
-                    Text("Wind Down")
-                        .font(.largeTitle)
+                    Text("Time to Wind Down")
+                        .font(.title2)
                         .fontWeight(.bold)
                         .foregroundStyle(.white)
-
-                    Text(currentDate)
-                        .font(.subheadline)
-                        .foregroundStyle(.white.opacity(0.4))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 20)
-                .padding(.top, 16)
-                .padding(.bottom, 24)
+                .padding(.bottom, 20)
+
+                // Welcome message for new users (no progress yet today)
+                if viewModel.currentStreak == 0 && progressPercentage == 0 {
+                    welcomeCard
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 20)
+                }
 
                 // Progress card
                 ProgressCard(
@@ -195,6 +237,43 @@ struct TonightView: View {
                     .padding(.bottom, 40)
             }
         }
+    }
+
+    // MARK: - Welcome Card
+
+    private var welcomeCard: some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 10) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 16))
+                    .foregroundStyle(.purple)
+                Text("Welcome to your wind-down ritual")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.white)
+                Spacer()
+            }
+
+            Text("Check off each step as you go. Build a streak by completing your routine each night.")
+                .font(.caption)
+                .foregroundStyle(.white.opacity(0.5))
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(
+                    LinearGradient(
+                        colors: [.purple.opacity(0.15), .indigo.opacity(0.1)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .strokeBorder(Color.purple.opacity(0.2), lineWidth: 1)
+                )
+        )
     }
 
     // MARK: - Completion View

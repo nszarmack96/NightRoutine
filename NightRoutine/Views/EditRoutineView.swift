@@ -6,6 +6,7 @@ struct EditRoutineView: View {
     @State private var newStepTitle = ""
     @State private var showingResetConfirmation = false
     @State private var showingSettings = false
+    @State private var draggingStep: RoutineStep?
 
     var body: some View {
         NavigationStack {
@@ -134,14 +135,15 @@ struct EditRoutineView: View {
                     .foregroundStyle(.white.opacity(0.4))
             }
 
-            Text("Drag to reorder • Swipe to delete")
+            Text("Hold and drag to reorder")
                 .font(.caption)
                 .foregroundStyle(.white.opacity(0.4))
 
-            LazyVStack(spacing: 8) {
+            VStack(spacing: 8) {
                 ForEach(viewModel.steps) { step in
-                    EditableStepRow(
+                    DraggableStepRow(
                         step: step,
+                        isDragging: draggingStep?.id == step.id,
                         onToggleEnabled: {
                             viewModel.toggleStepEnabled(step)
                         },
@@ -154,9 +156,16 @@ struct EditRoutineView: View {
                             }
                         }
                     )
-                }
-                .onMove { source, destination in
-                    viewModel.moveSteps(from: source, to: destination)
+                    .onDrag {
+                        self.draggingStep = step
+                        return NSItemProvider(object: step.id.uuidString as NSString)
+                    }
+                    .onDrop(of: [.text], delegate: StepDropDelegate(
+                        step: step,
+                        steps: $viewModel.steps,
+                        draggingStep: $draggingStep,
+                        onReorder: { viewModel.saveSteps() }
+                    ))
                 }
             }
         }
@@ -235,7 +244,109 @@ struct EditRoutineView: View {
     }
 }
 
-// MARK: - Editable Step Row
+// MARK: - Draggable Step Row
+
+struct DraggableStepRow: View {
+    let step: RoutineStep
+    let isDragging: Bool
+    let onToggleEnabled: () -> Void
+    let onEdit: () -> Void
+    let onDelete: () -> Void
+
+    var body: some View {
+        HStack(spacing: 12) {
+            // Drag handle
+            Image(systemName: "line.3.horizontal")
+                .font(.system(size: 14))
+                .foregroundStyle(.white.opacity(0.5))
+
+            // Enable/disable toggle
+            Button(action: onToggleEnabled) {
+                Image(systemName: step.isEnabled ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 22))
+                    .foregroundStyle(step.isEnabled ? .green : .white.opacity(0.3))
+            }
+
+            // Step title
+            Text(step.title)
+                .font(.body)
+                .foregroundStyle(step.isEnabled ? .white : .white.opacity(0.4))
+                .strikethrough(!step.isEnabled, color: .white.opacity(0.3))
+                .lineLimit(1)
+
+            Spacer()
+
+            // Edit button
+            Button(action: onEdit) {
+                Image(systemName: "pencil")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.white.opacity(0.4))
+                    .padding(8)
+            }
+
+            // Delete button
+            Button(action: onDelete) {
+                Image(systemName: "trash")
+                    .font(.system(size: 14))
+                    .foregroundStyle(.red.opacity(0.7))
+                    .padding(8)
+            }
+        }
+        .padding(.vertical, 12)
+        .padding(.horizontal, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(isDragging ? Color.purple.opacity(0.2) : Color.white.opacity(0.05))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(isDragging ? Color.purple.opacity(0.4) : Color.white.opacity(0.08), lineWidth: 1)
+                )
+        )
+        .opacity(isDragging ? 0.6 : 1.0)
+        .scaleEffect(isDragging ? 1.02 : 1.0)
+        .animation(.easeInOut(duration: 0.2), value: isDragging)
+    }
+}
+
+// MARK: - Step Drop Delegate
+
+struct StepDropDelegate: DropDelegate {
+    let step: RoutineStep
+    @Binding var steps: [RoutineStep]
+    @Binding var draggingStep: RoutineStep?
+    let onReorder: () -> Void
+
+    func performDrop(info: DropInfo) -> Bool {
+        draggingStep = nil
+        return true
+    }
+
+    func dropEntered(info: DropInfo) {
+        guard let draggingStep = draggingStep,
+              draggingStep.id != step.id,
+              let fromIndex = steps.firstIndex(where: { $0.id == draggingStep.id }),
+              let toIndex = steps.firstIndex(where: { $0.id == step.id }) else {
+            return
+        }
+
+        withAnimation(.easeInOut(duration: 0.2)) {
+            steps.move(fromOffsets: IndexSet(integer: fromIndex), toOffset: toIndex > fromIndex ? toIndex + 1 : toIndex)
+        }
+
+        // Update sort order
+        for (index, _) in steps.enumerated() {
+            steps[index].sortOrder = index
+        }
+
+        onReorder()
+    }
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        DropProposal(operation: .move)
+    }
+}
+
+// MARK: - Editable Step Row (Legacy)
 
 struct EditableStepRow: View {
     let step: RoutineStep
