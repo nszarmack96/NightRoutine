@@ -44,13 +44,10 @@ struct PaywallView: View {
         }
         .task {
             await viewModel.loadProducts()
-        }
-        .task(id: "retry") {
-            // Auto-retry once after 6 seconds if products still haven't loaded
-            // (covers edge cases where initial retries all failed)
-            try? await Task.sleep(nanoseconds: 6_000_000_000)
-            if viewModel.product == nil && !viewModel.isLoading {
-                await viewModel.loadProducts()
+            // If products still empty after retries, auto-trigger AppStore.sync()
+            // which either silently authenticates or prompts sign-in
+            if viewModel.product == nil {
+                await viewModel.signInAndLoad()
             }
         }
     }

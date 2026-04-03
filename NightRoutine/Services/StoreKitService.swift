@@ -61,7 +61,7 @@ final class StoreKitService: ObservableObject {
             }
 
             if attempt < 3 {
-                try? await Task.sleep(nanoseconds: 2_000_000_000) // wait 2s before retry
+                try? await Task.sleep(nanoseconds: 500_000_000) // wait 0.5s before retry
             }
         }
 

@@ -2,7 +2,8 @@ import Foundation
 
 enum AppConstants {
     static let appName = "Night Routine"
-    static let appVersion = "1.1.2"
+    static let appVersion = "1.1.4"
+    static let appBuild = "7"
     static let bundleIdentifier = "io.nightroutine.app"
     static let appStoreID = "6758357812"
 
