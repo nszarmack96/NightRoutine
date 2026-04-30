@@ -21,12 +21,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Adaptive Suggestions**: When a step has been skipped 3+ times on non-skipped nights, a nudge card appears at the top of Edit Routine suggesting removal, with a one-tap "Remove" button per flagged step.
 - **Routine History Calendar**: Full month-by-month calendar in Insights showing completed (purple), freeze-used (cyan), and missed nights. Includes month navigation and a legend.
 
+### Added
+- **Home Screen**: Persistent daily landing page shown on every launch. Displays current streak, date, greeting, and a "Begin Tonight's Routine" CTA. Turns green with a checkmark when routine is already completed for the night.
+
 ### Changed
 - `StreakData` model now includes `frozenDates: Set<String>` (backward-compatible via custom decoder)
 - `NotificationService.scheduleReminder` now accepts a `streak` parameter for contextual messaging
 - `DailyRecord` and `DailyHistory` models added for per-night step tracking
 - `InsightsView` now uses `DailyHistory` for all-time stats and calendar
 - Edit Routine screen now shows adaptive skip nudges and preset loader
+- App launch flow updated: new users → Onboarding → Home → Checklist; returning users → Home → Checklist
+- Streak badge in checklist toolbar now opens Insights on tap (was visual-only)
+- Share streak card now includes App Store link alongside image in native share sheet
+- Routine presets now enforce free tier step limit (6 steps); paywall shown if preset exceeds limit
+
+### Fixed
+- **IAP infinite spinner**: Purchase button no longer freezes indefinitely. Removed automatic `AppStore.sync()` call on paywall open. When price fails to load, a tappable "Unable to load price — Tap to retry" button is shown instead.
+- **Share card blank screen**: `ImageRenderer` now guards against nil output and sets `proposedSize` before presenting share sheet.
+- **Preset paywall bypass**: Free users applying presets with more than 6 steps were getting all steps for free. Now capped at 6 with paywall prompt.
 
 ---
 
@@ -190,3 +202,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.5.0 | 2026-01-26 | UX polish and accessibility |
 | 1.0.0 | 2026-01-26 | App Store ready |
 | 1.1.0 | 2026-01-27 | Pre-launch features (Skip, Notes, Quiet Mode, Quotes) |
+| 1.2.0 | 2026-04-30 | Retention & growth (Home screen, Insights, Streak Protection, Focused Mode, Share Card, Presets, bug fixes) |

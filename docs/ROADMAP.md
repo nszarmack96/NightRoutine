@@ -316,9 +316,42 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 - [x] Purple = completed, cyan = freeze, dimmed = missed/future
 - [x] Legend and day-of-week headers
 
+### Home Screen
+- [x] Persistent daily landing screen shown on every app launch
+- [x] Displays current streak, date, and time-aware greeting
+- [x] "Begin Tonight's Routine" CTA navigates to checklist
+- [x] CTA turns green/checkmark when routine already completed tonight
+
+### Bug Fixes (build 9)
+- [x] IAP infinite spinner: removed auto `AppStore.sync()`; replaced frozen spinner with "Tap to retry" button
+- [x] Streak badge now opens InsightsView on tap (was unresponsive)
+- [x] Share card blank screen: guarded nil image, set `proposedSize` on `ImageRenderer`
+- [x] Share card now includes App Store URL alongside image
+- [x] Preset paywall bypass: free users now capped at 6 steps when applying a preset
+
 ---
 
-## Future Considerations (Post-v1.2.0)
+## Phase 12: Polish & Expansion (v1.3.0) - PLANNED
+
+### Step Categories
+- [ ] Add category tagging to `RoutineStep` (Mind / Body / Environment)
+- [ ] Show category breakdown in Insights
+- [ ] Filter focused routine by category
+
+### Platform Expansion
+- [ ] Home screen widget (current streak + tonight's progress)
+- [ ] Lock screen widget (streak count)
+
+### iCloud Sync
+- [ ] Sync routine steps and streak data across devices via CloudKit
+
+### Additional
+- [ ] Apple Watch companion app
+- [ ] Multiple routines (morning + evening)
+
+---
+
+## Future Considerations (Post-v1.3.0)
 
 - [ ] Step Categories (Mind / Body / Environment) with insights breakdown
 - [ ] iCloud sync
@@ -344,4 +377,5 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 | 8 | Complete | Polish and accessibility |
 | 9 | Complete | App Store ready |
 | 10 | Complete | Pre-launch features (Skip, Notes, Quiet Mode, Quotes) |
-| 11 | Complete | Retention & growth (Presets, Insights, Focused Mode, Streak Protection, Share Card) |
+| 11 | Complete | v1.2.0 — Home screen, Insights, Streak Protection, Focused Mode, Share Card, Presets, bug fixes |
+| 12 | Planned | v1.3.0 — Step categories, widgets, iCloud sync |
