@@ -30,7 +30,7 @@ final class SettingsViewModel: ObservableObject {
         }
     }
 
-    init(
+    @MainActor init(
         persistence: PersistenceService = .shared,
         notificationService: NotificationService = .shared
     ) {
@@ -82,8 +82,9 @@ final class SettingsViewModel: ObservableObject {
 
     private func saveAndSchedule() {
         persistence.saveSettings(settings)
+        let streak = persistence.loadStreakData().currentStreak()
         Task {
-            await notificationService.scheduleReminder(settings: settings)
+            await notificationService.scheduleReminder(settings: settings, streak: streak)
         }
     }
 

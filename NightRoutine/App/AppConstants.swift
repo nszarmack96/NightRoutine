@@ -2,8 +2,8 @@ import Foundation
 
 enum AppConstants {
     static let appName = "Night Routine"
-    static let appVersion = "1.1.4"
-    static let appBuild = "7"
+    static let appVersion = "1.2.0"
+    static let appBuild = "8"
     static let bundleIdentifier = "io.nightroutine.app"
     static let appStoreID = "6758357812"
 
@@ -14,6 +14,9 @@ enum AppConstants {
 
     // Free tier limits
     static let freeTierStepLimit = 6
+
+    // Streak protection
+    static let maxFreezesPerWeek = 2
 
     // Default routine steps (seeded on first launch)
     static let defaultSteps = [
@@ -33,6 +36,7 @@ enum AppConstants {
         case streakData = "nightroutine.streak"
         case premiumStatus = "nightroutine.premium"
         case hasCompletedOnboarding = "nightroutine.onboarded"
+        case dailyHistory = "nightroutine.history"
     }
 
     // StoreKit product identifiers

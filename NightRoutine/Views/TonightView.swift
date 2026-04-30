@@ -4,6 +4,12 @@ struct TonightView: View {
     @StateObject private var viewModel = TonightViewModel()
     @State private var showingEditRoutine = false
     @State private var previouslyComplete = false
+    @State private var showingStreakProtection = false
+    @State private var streakFreezeUsed = false
+    @State private var showingFocusedRoutine = false
+    @State private var shareImage: UIImage? = nil
+    @State private var showingShareSheet = false
+    @State private var showingInsights = false
 
     private var currentDate: String {
         let formatter = DateFormatter()
@@ -29,57 +35,111 @@ struct TonightView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                // Gradient background
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.05, green: 0.05, blue: 0.12),
-                        Color(red: 0.08, green: 0.06, blue: 0.16),
-                        Color.black
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+        ZStack {
+            // Gradient background
+            LinearGradient(
+                colors: [
+                    Color(red: 0.05, green: 0.05, blue: 0.12),
+                    Color(red: 0.08, green: 0.06, blue: 0.16),
+                    Color.black
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
 
-                if viewModel.showCompletion {
-                    completionView
-                } else {
-                    checklistView
-                }
+            if viewModel.showCompletion {
+                completionView
+            } else {
+                checklistView
+            }
 
-                // Quiet Mode overlay - dims the screen slightly
-                if viewModel.settings.quietModeEnabled {
-                    Color.black.opacity(0.15)
-                        .ignoresSafeArea()
-                        .allowsHitTesting(false)
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    if viewModel.currentStreak > 0 {
-                        StreakBadge(count: viewModel.currentStreak)
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingEditRoutine = true
-                    } label: {
-                        Image(systemName: "gearshape")
-                            .foregroundStyle(.white.opacity(0.5))
-                    }
-                    .accessibilityLabel("Edit routine settings")
-                }
-            }
-            .sheet(isPresented: $showingEditRoutine, onDismiss: {
-                viewModel.loadData()
-            }) {
-                EditRoutineView()
+            // Quiet Mode overlay - dims the screen slightly
+            if viewModel.settings.quietModeEnabled {
+                Color.black.opacity(0.15)
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                if viewModel.currentStreak > 0 {
+                    Button {
+                        showingInsights = true
+                    } label: {
+                        StreakBadge(count: viewModel.currentStreak)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("View insights for \(viewModel.currentStreak) day streak")
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingEditRoutine = true
+                } label: {
+                    Image(systemName: "gearshape")
+                        .foregroundStyle(.white.opacity(0.5))
+                }
+                .accessibilityLabel("Edit routine settings")
+            }
+        }
+        .sheet(isPresented: $showingEditRoutine, onDismiss: {
+            viewModel.loadData()
+        }) {
+            EditRoutineView()
+        }
+        .sheet(isPresented: $showingInsights) {
+            InsightsView()
+        }
+        .fullScreenCover(isPresented: $showingFocusedRoutine) {
+            FocusedRoutineView(
+                steps: viewModel.enabledSteps,
+                onComplete: { completedIDs in
+                    // Apply completions from focused mode back to the main view model
+                    for step in viewModel.enabledSteps {
+                        let shouldBeComplete = completedIDs.contains(step.id)
+                        let isCurrentlyComplete = viewModel.isStepCompleted(step)
+                        if shouldBeComplete != isCurrentlyComplete {
+                            viewModel.toggleStep(step)
+                        }
+                    }
+                    if viewModel.hapticsEnabled {
+                        HapticService.routineComplete()
+                    }
+                    previouslyComplete = viewModel.allComplete
+                },
+                onDismiss: {}
+            )
+        }
+        .sheet(isPresented: $showingShareSheet) {
+            if let image = shareImage {
+                ShareSheet(image: image)
+            }
+        }
+        .sheet(isPresented: $showingStreakProtection) {
+            StreakProtectionSheet(
+                streak: viewModel.currentStreak,
+                freezesRemaining: viewModel.freezesRemainingThisWeek,
+                onUseFreeze: {
+                    viewModel.useStreakFreeze()
+                    streakFreezeUsed = true
+                    showingStreakProtection = false
+                },
+                onDismiss: {
+                    showingStreakProtection = false
+                }
+            )
+        }
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.loadData()
+            // Show streak protection prompt if streak is at risk and freeze is available
+            if viewModel.streakAtRisk && viewModel.canUseStreakFreeze && !streakFreezeUsed {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    showingStreakProtection = true
+                }
+            }
         }
     }
 
@@ -188,12 +248,42 @@ struct TonightView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 24)
 
-                // Section header
+                // Section header + Start Routine button
                 HStack {
                     Text("Tonight's Routine")
                         .font(.headline)
                         .foregroundStyle(.white.opacity(0.7))
                     Spacer()
+                    Button {
+                        HapticService.selection()
+                        showingFocusedRoutine = true
+                    } label: {
+                        HStack(spacing: 5) {
+                            Image(systemName: "play.fill")
+                                .font(.system(size: 10, weight: .bold))
+                            Text("Start")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                        }
+                        .foregroundStyle(.white.opacity(0.8))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(
+                            Capsule()
+                                .fill(
+                                    LinearGradient(
+                                        colors: [.purple.opacity(0.4), .indigo.opacity(0.3)],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .overlay(
+                                    Capsule()
+                                        .strokeBorder(Color.purple.opacity(0.3), lineWidth: 1)
+                                )
+                        )
+                    }
+                    .accessibilityLabel("Start focused routine mode")
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 12)
@@ -337,6 +427,50 @@ struct TonightView: View {
                     .padding(.top, 8)
                 }
 
+                // Show freeze badge if streak was saved with a freeze
+                if streakFreezeUsed {
+                    HStack(spacing: 6) {
+                        Image(systemName: "snowflake")
+                            .foregroundStyle(.cyan)
+                        Text("Streak saved with a freeze")
+                            .foregroundStyle(.white.opacity(0.5))
+                    }
+                    .font(.caption)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 6)
+                    .background(
+                        Capsule()
+                            .fill(Color.cyan.opacity(0.1))
+                    )
+                }
+
+                // Share streak card — only for full completions with a streak
+                if !viewModel.wasSkipped && viewModel.currentStreak > 0 {
+                    Button {
+                        shareStreakCard()
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.system(size: 13, weight: .semibold))
+                            Text("Share your streak")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                        }
+                        .foregroundStyle(.white.opacity(0.7))
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(
+                            Capsule()
+                                .fill(Color.white.opacity(0.08))
+                                .overlay(
+                                    Capsule()
+                                        .strokeBorder(Color.white.opacity(0.12), lineWidth: 1)
+                                )
+                        )
+                    }
+                    .accessibilityLabel("Share your \(viewModel.currentStreak) day streak")
+                }
+
                 Spacer()
 
                 // Tomorrow preview message
@@ -376,6 +510,28 @@ struct TonightView: View {
                 .accessibilityLabel("Reset tonight's routine")
                 .accessibilityHint("Uncheck all completed steps")
                 .padding(.bottom, 40)
+            }
+        }
+    }
+
+    // MARK: - Share Streak Card
+
+    private func shareStreakCard() {
+        Task { @MainActor in
+            let card = StreakCardView(
+                streak: viewModel.currentStreak,
+                date: StreakCardView.formattedDate
+            )
+            let renderer = ImageRenderer(content: card)
+            renderer.scale = 1 // card is already 1080pt; 1x gives 1080px output
+            renderer.proposedSize = .init(width: 1080, height: 1080)
+
+            guard let image = renderer.uiImage else { return }
+            shareImage = image
+            showingShareSheet = true
+
+            if viewModel.hapticsEnabled {
+                HapticService.selection()
             }
         }
     }

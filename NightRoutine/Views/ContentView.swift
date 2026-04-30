@@ -5,7 +5,7 @@ struct ContentView: View {
 
     var body: some View {
         if hasCompletedOnboarding {
-            TonightView()
+            HomeView()
         } else {
             OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)
         }

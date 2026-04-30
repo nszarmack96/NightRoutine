@@ -26,7 +26,7 @@ final class PaywallViewModel: ObservableObject {
         storeKitService.isPremium
     }
 
-    init(storeKitService: StoreKitService = .shared) {
+    @MainActor init(storeKitService: StoreKitService = .shared) {
         self.storeKitService = storeKitService
     }
 

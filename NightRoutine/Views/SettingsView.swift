@@ -6,6 +6,7 @@ struct SettingsView: View {
     @Environment(\.requestReview) private var requestReview
     @StateObject private var viewModel = SettingsViewModel()
     @State private var showingTimePicker = false
+    @State private var showingInsights = false
 
     var body: some View {
         NavigationStack {
@@ -32,6 +33,9 @@ struct SettingsView: View {
 
                         // About Section
                         aboutSection
+                    }
+                    .sheet(isPresented: $showingInsights) {
+                        InsightsView()
                     }
                     .padding(.top)
                 }
@@ -175,6 +179,23 @@ struct SettingsView: View {
                     .font(.headline)
                     .foregroundStyle(.white)
             }
+
+            // Weekly Insights
+            Button {
+                showingInsights = true
+            } label: {
+                SettingsRow(
+                    icon: "chart.bar.fill",
+                    iconColor: .purple,
+                    title: "Weekly Insights",
+                    subtitle: "Completion stats and trends"
+                ) {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.3))
+                }
+            }
+            .buttonStyle(.plain)
 
             // Quiet Mode Toggle
             SettingsRow(

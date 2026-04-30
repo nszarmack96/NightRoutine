@@ -31,6 +31,14 @@
 		A1000072229F0001 /* PaywallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000072229F0000 /* PaywallViewModel.swift */; };
 		A1000080229F0001 /* HapticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000080229F0000 /* HapticService.swift */; };
 		A1000081229F0001 /* QuoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000081229F0000 /* QuoteService.swift */; };
+		A1000015229F0001 /* DailyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000015229F0000 /* DailyRecord.swift */; };
+		A1000090229F0001 /* FocusedRoutineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000090229F0000 /* FocusedRoutineView.swift */; };
+		A1000091229F0001 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000091229F0000 /* ShareSheet.swift */; };
+		A1000092229F0001 /* StreakProtectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000092229F0000 /* StreakProtectionSheet.swift */; };
+		A1000093229F0001 /* StreakCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000093229F0000 /* StreakCardView.swift */; };
+		A1000094229F0001 /* RoutinePresetSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000094229F0000 /* RoutinePresetSheet.swift */; };
+		A1000095229F0001 /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000095229F0000 /* InsightsView.swift */; };
+		A1000096229F0001 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000096229F0000 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +68,14 @@
 		A1000073229F0000 /* Products.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Products.storekit; sourceTree = "<group>"; };
 		A1000080229F0000 /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
 		A1000081229F0000 /* QuoteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteService.swift; sourceTree = "<group>"; };
+		A1000015229F0000 /* DailyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyRecord.swift; sourceTree = "<group>"; };
+		A1000090229F0000 /* FocusedRoutineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedRoutineView.swift; sourceTree = "<group>"; };
+		A1000091229F0000 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
+		A1000092229F0000 /* StreakProtectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakProtectionSheet.swift; sourceTree = "<group>"; };
+		A1000093229F0000 /* StreakCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCardView.swift; sourceTree = "<group>"; };
+		A1000094229F0000 /* RoutinePresetSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinePresetSheet.swift; sourceTree = "<group>"; };
+		A1000095229F0000 /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
+		A1000096229F0000 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +128,7 @@
 				A1000012229F0000 /* UserSettings.swift */,
 				A1000013229F0000 /* StreakData.swift */,
 				A1000014229F0000 /* PremiumStatus.swift */,
+				A1000015229F0000 /* DailyRecord.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -125,6 +142,13 @@
 				A1000050229F0000 /* EditRoutineView.swift */,
 				A1000061229F0000 /* SettingsView.swift */,
 				A1000071229F0000 /* PaywallView.swift */,
+				A1000090229F0000 /* FocusedRoutineView.swift */,
+				A1000091229F0000 /* ShareSheet.swift */,
+				A1000092229F0000 /* StreakProtectionSheet.swift */,
+				A1000093229F0000 /* StreakCardView.swift */,
+				A1000094229F0000 /* RoutinePresetSheet.swift */,
+				A1000095229F0000 /* InsightsView.swift */,
+				A1000096229F0000 /* HomeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -269,6 +293,14 @@
 				A1000072229F0001 /* PaywallViewModel.swift in Sources */,
 				A1000080229F0001 /* HapticService.swift in Sources */,
 				A1000081229F0001 /* QuoteService.swift in Sources */,
+				A1000015229F0001 /* DailyRecord.swift in Sources */,
+				A1000090229F0001 /* FocusedRoutineView.swift in Sources */,
+				A1000091229F0001 /* ShareSheet.swift in Sources */,
+				A1000092229F0001 /* StreakProtectionSheet.swift in Sources */,
+				A1000093229F0001 /* StreakCardView.swift in Sources */,
+				A1000094229F0001 /* RoutinePresetSheet.swift in Sources */,
+				A1000095229F0001 /* InsightsView.swift in Sources */,
+				A1000096229F0001 /* HomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,7 +433,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"NightRoutine/Preview Content\"";
 				DEVELOPMENT_TEAM = 594HPHP5ZK;
 				ENABLE_PREVIEWS = YES;
@@ -416,7 +448,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.nightroutine.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -433,7 +465,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"NightRoutine/Preview Content\"";
 				DEVELOPMENT_TEAM = 594HPHP5ZK;
 				ENABLE_PREVIEWS = YES;
@@ -448,7 +480,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = io.nightroutine.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

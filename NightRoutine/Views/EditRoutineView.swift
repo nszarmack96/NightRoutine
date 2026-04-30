@@ -6,6 +6,7 @@ struct EditRoutineView: View {
     @State private var newStepTitle = ""
     @State private var showingResetConfirmation = false
     @State private var showingSettings = false
+    @State private var showingPresets = false
     @State private var draggingStep: RoutineStep?
 
     var body: some View {
@@ -27,6 +28,11 @@ struct EditRoutineView: View {
                     VStack(spacing: 24) {
                         // Add new step section
                         addStepSection
+
+                        // Adaptive nudge (skip suggestions)
+                        if !viewModel.frequentlySkippedIDs.isEmpty {
+                            skipNudgeSection
+                        }
 
                         // Steps list section
                         stepsListSection
@@ -73,7 +79,76 @@ struct EditRoutineView: View {
             .sheet(isPresented: $showingSettings) {
                 SettingsView()
             }
+            .sheet(isPresented: $showingPresets) {
+                RoutinePresetSheet { stepTitles in
+                    viewModel.applyPreset(stepTitles)
+                }
+            }
         }
+    }
+
+    // MARK: - Skip Nudge Section
+
+    private var skipNudgeSection: some View {
+        let skippedSteps = viewModel.steps.filter { viewModel.frequentlySkippedIDs.contains($0.id) }
+        return VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 8) {
+                Image(systemName: "lightbulb.fill")
+                    .font(.system(size: 13))
+                    .foregroundStyle(.yellow)
+                Text("You've been skipping these steps")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.white)
+            }
+
+            Text("Consider removing them or adjusting your routine.")
+                .font(.caption)
+                .foregroundStyle(.white.opacity(0.4))
+
+            VStack(spacing: 6) {
+                ForEach(skippedSteps) { step in
+                    HStack {
+                        Text(step.title)
+                            .font(.subheadline)
+                            .foregroundStyle(.white.opacity(0.7))
+                        Spacer()
+                        Button {
+                            withAnimation {
+                                viewModel.deleteStep(step)
+                            }
+                        } label: {
+                            Text("Remove")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .foregroundStyle(.red.opacity(0.7))
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(
+                                    Capsule()
+                                        .fill(Color.red.opacity(0.1))
+                                )
+                        }
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.white.opacity(0.04))
+                    )
+                }
+            }
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.yellow.opacity(0.05))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .strokeBorder(Color.yellow.opacity(0.15), lineWidth: 1)
+                )
+        )
+        .padding(.horizontal, 20)
     }
 
     // MARK: - Add Step Section
@@ -229,6 +304,28 @@ struct EditRoutineView: View {
     private var resetSection: some View {
         VStack(spacing: 16) {
             Button {
+                showingPresets = true
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "square.stack.fill")
+                    Text("Load a Preset Routine")
+                }
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .foregroundStyle(.white.opacity(0.7))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 14)
+                        .fill(Color.purple.opacity(0.15))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .strokeBorder(Color.purple.opacity(0.25), lineWidth: 1)
+                        )
+                )
+            }
+
+            Button {
                 showingResetConfirmation = true
             } label: {
                 HStack {
@@ -236,7 +333,7 @@ struct EditRoutineView: View {
                     Text("Reset to Default Steps")
                 }
                 .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(.white.opacity(0.4))
             }
         }
         .padding(.horizontal, 20)

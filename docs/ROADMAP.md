@@ -268,15 +268,63 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 
 ---
 
-## Future Considerations (Post-MVP)
+## Phase 11: Retention & Growth (v1.2.0) - COMPLETE
 
-These are explicitly **not** in scope for MVP:
+### Smarter Notifications
+- [x] Contextual message rotation based on streak tier (5 tiers)
+- [x] Auto-reschedule notification after routine completion with updated message
+- [x] Custom message (Premium) still takes priority over smart messages
 
+### Streak Protection
+- [x] `frozenDates` field added to `StreakData` (backward-compatible)
+- [x] Max 2 freezes per ISO week
+- [x] Auto-prompt on app open when streak is at risk and freeze is available
+- [x] Freeze badge on completion screen
+
+### Focused Routine Mode
+- [x] Full-screen step-by-step `FocusedRoutineView`
+- [x] "Start" button on Tonight screen section header
+- [x] Swipe/tap to advance, swipe right to go back, skip individual steps
+- [x] Completions sync back to main checklist
+
+### Weekly Insights
+- [x] `DailyRecord` / `DailyHistory` data model
+- [x] Recorded on completion and skip in `TonightViewModel`
+- [x] `InsightsView` with 7-night dots, completion stats, all-time stats, most skipped step
+- [x] Accessible via Settings → Weekly Insights
+
+### Shareable Streak Card
+- [x] `StreakCardView` — 1080×1080 shareable card design
+- [x] `ImageRenderer` generates UIImage on tap
+- [x] Native iOS share sheet (iMessage, Instagram, AirDrop, Photos, etc.)
+- [x] Appears on completion screen for full completions with streak > 0
+
+### Routine Presets
+- [x] 4 presets: Quick, Deep Wind Down, High Discipline, Mindful
+- [x] `RoutinePresetSheet` with step preview per preset
+- [x] "Load a Preset Routine" button in Edit Routine
+- [x] Fully editable after applying
+
+### Adaptive Suggestions
+- [x] `frequentlySkippedStepIDs(threshold:)` in `PersistenceService`
+- [x] Skip nudge card in Edit Routine for steps skipped 3+ times
+- [x] One-tap remove per flagged step
+
+### Routine History Calendar
+- [x] Full month calendar grid in Insights
+- [x] Month navigation (capped at current month)
+- [x] Purple = completed, cyan = freeze, dimmed = missed/future
+- [x] Legend and day-of-week headers
+
+---
+
+## Future Considerations (Post-v1.2.0)
+
+- [ ] Step Categories (Mind / Body / Environment) with insights breakdown
 - [ ] iCloud sync
 - [ ] Apple Watch companion app
 - [ ] Widgets
 - [ ] Multiple routines (morning, evening, etc.)
-- [ ] Statistics/analytics dashboard
 - [ ] Social features
 
 ---
@@ -295,4 +343,5 @@ These are explicitly **not** in scope for MVP:
 | 7 | Complete | Premium purchase |
 | 8 | Complete | Polish and accessibility |
 | 9 | Complete | App Store ready |
-| 10 | Complete | Pre-launch features |
+| 10 | Complete | Pre-launch features (Skip, Notes, Quiet Mode, Quotes) |
+| 11 | Complete | Retention & growth (Presets, Insights, Focused Mode, Streak Protection, Share Card) |

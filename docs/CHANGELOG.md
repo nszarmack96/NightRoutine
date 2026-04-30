@@ -7,9 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned
-- App Store submission
-- TestFlight beta testing
+---
+
+## [1.2.0] - 2026-04-28
+
+### Added
+- **Smarter Notifications**: Contextual daily reminder messages based on current streak tier (5 tiers: new user → building → habit forming → week+ → legendary). Messages auto-update after each completed routine.
+- **Streak Protection (Freezes)**: Use up to 2 freezes per week to protect a streak after a missed night. Auto-prompt appears on app open when streak is at risk. Freeze badge shown on completion screen when used. Backward-compatible decoder ensures existing streaks survive the update.
+- **Focused Routine Mode**: Full-screen step-by-step flow launched from a "Start" button on the Tonight screen. Supports tap to complete, swipe gestures to advance/go back, and per-step skip. Completions sync back to the main checklist.
+- **Weekly Insights**: New insights screen accessible via Settings. Shows nights completed this week, average completion %, 7-day dot calendar, current streak, total nights completed, and most skipped step. Backed by a new `DailyRecord`/`DailyHistory` data model recorded on each completion and skip.
+- **Shareable Streak Card**: One-tap share from the completion screen generates a 1080×1080 image (moon icon, streak count, date, subtle branding) and opens the native iOS share sheet.
+- **Routine Presets**: "Load a Preset Routine" button in Edit Routine opens a preset picker with 4 options — Quick, Deep Wind Down, High Discipline, and Mindful. Each preset is fully editable after applying.
+- **Adaptive Suggestions**: When a step has been skipped 3+ times on non-skipped nights, a nudge card appears at the top of Edit Routine suggesting removal, with a one-tap "Remove" button per flagged step.
+- **Routine History Calendar**: Full month-by-month calendar in Insights showing completed (purple), freeze-used (cyan), and missed nights. Includes month navigation and a legend.
+
+### Changed
+- `StreakData` model now includes `frozenDates: Set<String>` (backward-compatible via custom decoder)
+- `NotificationService.scheduleReminder` now accepts a `streak` parameter for contextual messaging
+- `DailyRecord` and `DailyHistory` models added for per-night step tracking
+- `InsightsView` now uses `DailyHistory` for all-time stats and calendar
+- Edit Routine screen now shows adaptive skip nudges and preset loader
 
 ---
 

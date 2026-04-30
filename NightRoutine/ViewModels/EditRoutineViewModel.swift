@@ -7,6 +7,7 @@ final class EditRoutineViewModel: ObservableObject {
     @Published var showingAddStep = false
     @Published var showingPaywall = false
     @Published var editingStep: RoutineStep?
+    @Published var frequentlySkippedIDs: Set<UUID> = []
 
     private let persistence: PersistenceService
     private let isPremium: Bool
@@ -27,6 +28,7 @@ final class EditRoutineViewModel: ObservableObject {
 
     func loadSteps() {
         steps = persistence.loadSteps().sorted { $0.sortOrder < $1.sortOrder }
+        frequentlySkippedIDs = persistence.frequentlySkippedStepIDs()
     }
 
     func addStep(title: String) {
@@ -90,6 +92,23 @@ final class EditRoutineViewModel: ObservableObject {
     func resetToDefaults() {
         steps = RoutineStep.defaultSteps()
         saveSteps()
+    }
+
+    func applyPreset(_ stepTitles: [String]) {
+        let allowedTitles: [String]
+        if isPremium {
+            allowedTitles = stepTitles
+        } else {
+            allowedTitles = Array(stepTitles.prefix(AppConstants.freeTierStepLimit))
+        }
+        steps = allowedTitles.enumerated().map { index, title in
+            RoutineStep(title: title, isEnabled: true, sortOrder: index)
+        }
+        saveSteps()
+        // If the preset was truncated, prompt upgrade so user knows they're missing steps
+        if !isPremium && stepTitles.count > AppConstants.freeTierStepLimit {
+            showingPaywall = true
+        }
     }
 
     private func reindexSteps() {

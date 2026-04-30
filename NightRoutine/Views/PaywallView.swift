@@ -44,11 +44,6 @@ struct PaywallView: View {
         }
         .task {
             await viewModel.loadProducts()
-            // If products still empty after retries, auto-trigger AppStore.sync()
-            // which either silently authenticates or prompts sign-in
-            if viewModel.product == nil {
-                await viewModel.signInAndLoad()
-            }
         }
     }
 
@@ -116,41 +111,66 @@ struct PaywallView: View {
             // Purchase section
             VStack(spacing: 16) {
                 // Price button
-                Button {
-                    Task {
-                        await viewModel.purchase()
-                    }
-                } label: {
+                if viewModel.isLoading {
+                    // Loading state — spinner while fetching from App Store
                     HStack {
-                        if viewModel.isPurchasing {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .black))
-                            Text("Processing...")
-                                .fontWeight(.semibold)
-                        } else if viewModel.isLoading || (viewModel.product == nil) {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                            Text("Loading price...")
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.white.opacity(0.7))
-                        } else {
-                            Text("Unlock for \(viewModel.priceString)")
-                                .fontWeight(.semibold)
-                        }
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        Text("Loading price...")
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.white.opacity(0.7))
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 18)
-                    .background(
-                        LinearGradient(
-                            colors: viewModel.product != nil ? [.yellow, .orange] : [.gray.opacity(0.4), .gray.opacity(0.3)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .foregroundStyle(viewModel.product != nil ? .black : .white)
+                    .background(Color.gray.opacity(0.3))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
+                } else if viewModel.product == nil {
+                    // Load failed — tap to retry (never hangs)
+                    Button {
+                        Task { await viewModel.loadProducts() }
+                    } label: {
+                        HStack(spacing: 8) {
+                            Image(systemName: "arrow.clockwise")
+                                .font(.system(size: 14, weight: .semibold))
+                            Text("Unable to load price — Tap to retry")
+                                .fontWeight(.semibold)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 18)
+                        .background(Color.gray.opacity(0.3))
+                        .foregroundStyle(.white.opacity(0.8))
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                    }
+                } else {
+                    // Normal purchase button
+                    Button {
+                        Task { await viewModel.purchase() }
+                    } label: {
+                        HStack {
+                            if viewModel.isPurchasing {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .black))
+                                Text("Processing...")
+                                    .fontWeight(.semibold)
+                            } else {
+                                Text("Unlock for \(viewModel.priceString)")
+                                    .fontWeight(.semibold)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 18)
+                        .background(
+                            LinearGradient(
+                                colors: [.yellow, .orange],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .foregroundStyle(.black)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                    }
+                    .disabled(viewModel.isPurchasing)
                 }
-                .disabled(viewModel.isPurchasing || viewModel.isLoading || viewModel.product == nil)
 
                 // Restore button
                 Button {

@@ -94,6 +94,40 @@ extension PersistenceService {
         save(status, forKey: .premiumStatus)
     }
 
+    // MARK: Daily History
+
+    func loadDailyHistory() -> DailyHistory {
+        load(forKey: .dailyHistory) ?? [:]
+    }
+
+    func saveDailyHistory(_ history: DailyHistory) {
+        save(history, forKey: .dailyHistory)
+    }
+
+    /// Returns step IDs that have been present but not completed 3 or more times.
+    /// Only considers non-skipped nights so skip-without-guilt doesn't pollute the signal.
+    func frequentlySkippedStepIDs(threshold: Int = 3) -> Set<UUID> {
+        let history = loadDailyHistory()
+        var skipCounts: [UUID: Int] = [:]
+        for record in history.values where !record.wasSkipped {
+            for snapshot in record.stepSnapshots where !record.completedStepIDs.contains(snapshot.id) {
+                skipCounts[snapshot.id, default: 0] += 1
+            }
+        }
+        return Set(skipCounts.filter { $0.value >= threshold }.keys)
+    }
+
+    func recordDay(dateKey: String, completedStepIDs: Set<UUID>, steps: [RoutineStep], wasSkipped: Bool) {
+        var history = loadDailyHistory()
+        let snapshots = steps.map { StepSnapshot(id: $0.id, title: $0.title) }
+        history[dateKey] = DailyRecord(
+            completedStepIDs: completedStepIDs,
+            stepSnapshots: snapshots,
+            wasSkipped: wasSkipped
+        )
+        saveDailyHistory(history)
+    }
+
     // MARK: Onboarding
 
     func hasCompletedOnboarding() -> Bool {

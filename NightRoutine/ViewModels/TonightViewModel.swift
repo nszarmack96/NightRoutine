@@ -33,6 +33,28 @@ final class TonightViewModel: ObservableObject {
         streakData.currentStreak()
     }
 
+    var streakAtRisk: Bool {
+        streakData.streakAtRisk()
+    }
+
+    var canUseStreakFreeze: Bool {
+        streakData.canUseFreeze
+    }
+
+    var freezesRemainingThisWeek: Int {
+        streakData.freezesRemainingThisWeek
+    }
+
+    /// Freeze yesterday to protect the streak. Returns true if successful.
+    @discardableResult
+    func useStreakFreeze() -> Bool {
+        let success = streakData.freezeYesterday()
+        if success {
+            persistence.saveStreakData(streakData)
+        }
+        return success
+    }
+
     /// Check if haptics should be played (respects Quiet Mode)
     var hapticsEnabled: Bool {
         !settings.quietModeEnabled
@@ -85,7 +107,13 @@ final class TonightViewModel: ObservableObject {
     func skipWithoutGuilt() {
         routineState.skipWithoutGuilt()
         persistence.saveRoutineState(routineState)
-        // Note: We intentionally do NOT update streak here
+        // Record the skip in history
+        persistence.recordDay(
+            dateKey: RoutineState.todayKey(),
+            completedStepIDs: routineState.completedStepIDs,
+            steps: enabledSteps,
+            wasSkipped: true
+        )
     }
 
     private func updateStreakIfNeeded() {
@@ -93,10 +121,27 @@ final class TonightViewModel: ObservableObject {
 
         if allComplete {
             streakData.markCompleted(dateKey: todayKey)
+            // Record full completion in history
+            persistence.recordDay(
+                dateKey: todayKey,
+                completedStepIDs: routineState.completedStepIDs,
+                steps: enabledSteps,
+                wasSkipped: false
+            )
         } else {
             streakData.markIncomplete(dateKey: todayKey)
         }
 
         persistence.saveStreakData(streakData)
+        rescheduleNotificationIfNeeded()
+    }
+
+    private func rescheduleNotificationIfNeeded() {
+        let settings = persistence.loadSettings()
+        guard settings.reminderEnabled, settings.reminderMessage == nil else { return }
+        let streak = streakData.currentStreak()
+        Task {
+            await NotificationService.shared.scheduleReminder(settings: settings, streak: streak)
+        }
     }
 }
