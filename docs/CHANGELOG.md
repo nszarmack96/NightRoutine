@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.2.0] - 2026-04-28
+## [1.2.0] - 2026-04-30
 
 ### Added
 - **Smarter Notifications**: Contextual daily reminder messages based on current streak tier (5 tiers: new user → building → habit forming → week+ → legendary). Messages auto-update after each completed routine.
