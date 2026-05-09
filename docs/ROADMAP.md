@@ -268,7 +268,7 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 
 ---
 
-## Phase 11: Retention & Growth (v1.2.0) - COMPLETE
+## Phase 11: Retention & Growth (v1.2.0 → v1.2.1) - COMPLETE
 
 ### Smarter Notifications
 - [x] Contextual message rotation based on streak tier (5 tiers)
@@ -322,7 +322,8 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 - [x] "Begin Tonight's Routine" CTA navigates to checklist
 - [x] CTA turns green/checkmark when routine already completed tonight
 
-### Bug Fixes (build 9)
+### v1.2.1 — Home Screen & Bug Fixes (build 9)
+- [x] Home screen: persistent daily landing page with streak, date, greeting, and CTA
 - [x] IAP infinite spinner: removed auto `AppStore.sync()`; replaced frozen spinner with "Tap to retry" button
 - [x] Streak badge now opens InsightsView on tap (was unresponsive)
 - [x] Share card blank screen: guarded nil image, set `proposedSize` on `ImageRenderer`
@@ -377,5 +378,6 @@ This document tracks the implementation phases for the Night Routine Wind-Down a
 | 8 | Complete | Polish and accessibility |
 | 9 | Complete | App Store ready |
 | 10 | Complete | Pre-launch features (Skip, Notes, Quiet Mode, Quotes) |
-| 11 | Complete | v1.2.0 — Home screen, Insights, Streak Protection, Focused Mode, Share Card, Presets, bug fixes |
+| 11 | Complete | v1.2.0 — Insights, Streak Protection, Focused Mode, Share Card, Presets, Adaptive Suggestions |
+| 11.1 | Complete | v1.2.1 — Home screen, IAP fix, share card fix, preset paywall gate, streak badge navigation |
 | 12 | Planned | v1.3.0 — Step categories, widgets, iCloud sync |
